@@ -1,0 +1,21 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/ABeeZee-Italic.ttf",
+      "sha1": "01ee49994920178bf5d94d47e2fba54c32f204fe"
+    },
+    {
+      "path": "assets/fonts/ABeeZee-Regular.ttf",
+      "sha1": "3228dce6045041ccde6ce7a12ebbcc52bbc257bd"
+    },
+    {
+      "path": "assets/fonts/Sura-Bold.ttf",
+      "sha1": "d2c63c9178812baf20a345c5bb32ad97a49756d2"
+    },
+    {
+      "path": "assets/fonts/Sura-Regular.ttf",
+      "sha1": "b0c95ca558255bc3db9fff85f782184030d326c1"
+    }
+  ]
+}
