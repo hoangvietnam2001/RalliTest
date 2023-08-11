@@ -2,6 +2,7 @@ import { Dimensions, StyleSheet, Text, View } from 'react-native'
 import React, { useState } from 'react'
 import { Icon } from 'react-native-elements'
 import ModalDelete from '../../components/layout/ModalDelete';
+import ModalAdd from '../../components/layout/ModalAdd';
 const Info = [
   {
     name: 'MAC',
@@ -71,10 +72,7 @@ const InformationDetail = () => {
       </View>
       {
         showAlert && (
-          <ModalDelete
-            onSubmit={handleSumit}
-            onCancle={handleCancle}
-          />
+          <ModalAdd/>
         )
       }
     </View>
