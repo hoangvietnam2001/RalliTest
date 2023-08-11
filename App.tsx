@@ -14,7 +14,7 @@ export default function App() {
 				initialRouteName="LightNB"
 				screenOptions={{
 					tabBarActiveTintColor: '#005A6F',
-					tabBarStyle: {height: 72},
+					tabBarStyle: {height: 82},
 					tabBarLabelStyle: {
 						fontWeight: '400',
 						fontSize: 12,
