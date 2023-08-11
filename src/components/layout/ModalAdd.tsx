@@ -39,7 +39,7 @@ const Item = ({ title, data }: { title: string, data: string }) => {
         </View>
     );
 };
-const ModalAdd = () => {
+const ModalAdd = ({onSave}:{onSave?:()=>void}) => {
     return (
         <View style={[styles.container]}>
             <Text style={styles.titleHeader}>Thêm thông tin đèn NB</Text>
@@ -54,7 +54,7 @@ const ModalAdd = () => {
                     ))
                 }
             </View>
-            <TouchableOpacity style = {styles.btnSave}>
+            <TouchableOpacity style = {styles.btnSave} onPress={onSave}>
                 <Text style = {styles.btnText}>Lưu</Text>
             </TouchableOpacity>
         </View>
@@ -64,14 +64,14 @@ const WIDTH = Dimensions.get('screen').width;
 const HEIGHT = Dimensions.get('screen').height;
 const styles = StyleSheet.create({
     container: {
+        marginHorizontal:15,
         width: WIDTH / 1.1,
         height: 255,
         position: 'absolute',
-        marginVertical: HEIGHT / 3.5,
+        top: 100,
         borderRadius: 15,
         backgroundColor: 'white',
         alignItems: "center"
-
     },
     titleHeader:{
         color: '#005A6F',

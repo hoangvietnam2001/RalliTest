@@ -15,6 +15,7 @@ import axios from 'axios';
 import LoadingNB from './LoadingNB';
 import ItemNB from '../../components/ItemNB';
 import {URL_GET_LIGHTS} from '../../utils/config';
+import ModalAdd from '../../components/layout/ModalAdd';
 
 const WIDTH = Dimensions.get('window').width;
 const HEIGHT = Dimensions.get('window').height;
@@ -30,6 +31,7 @@ export default function LightNB({navigation}:{navigation: any}) {
 
 	const [data, setData] = useState(null);
 	const [loading, setLoading] = useState(true);
+	const [showAdd, setShow] = useState(false);
 
 	// call API to load data
 	useEffect(() => {
@@ -46,16 +48,22 @@ export default function LightNB({navigation}:{navigation: any}) {
 			console.error('Error fetching data:', error);
 		}
 	};
+	const handleShowAdd = () =>{
+		setShow(true);
+	}
+	const handleSave = () =>{
+		setShow(false)
+	} 
 
 	return (
 		<>
 			{loading ? (
 				<LoadingNB />
 			) : (
-				<SafeAreaView style={styles.container}>
+				<SafeAreaView style={[styles.container, {backgroundColor: showAdd?'#CCCCCC': '#FFF'}]}>
 					{/* <LoadingNB /> */}
 					<View style={styles.header}>
-						<TouchableOpacity style={styles.icon}>
+						<TouchableOpacity style={styles.icon} onPress={handleShowAdd}>
 							<Image
 								source={require('../../assets/icons/addIcon.png')}
 								style={styles.imgIcon}
@@ -78,6 +86,13 @@ export default function LightNB({navigation}:{navigation: any}) {
 							keyExtractor={item => item._id}
 						/>
 					</View>
+					{
+						showAdd && (
+							<ModalAdd
+							onSave={handleSave}
+							/>
+						)
+					}
 				</SafeAreaView>
 			)}
 		</>
@@ -87,7 +102,7 @@ export default function LightNB({navigation}:{navigation: any}) {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: '#fff',
+		
 	},
 	header: {
 		flexDirection: 'row',

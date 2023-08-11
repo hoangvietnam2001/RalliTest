@@ -72,7 +72,10 @@ const InformationDetail = () => {
       </View>
       {
         showAlert && (
-          <ModalAdd/>
+          <ModalDelete
+            onSubmit={handleSumit}
+            onCancle={handleCancle}
+          />
         )
       }
     </View>
