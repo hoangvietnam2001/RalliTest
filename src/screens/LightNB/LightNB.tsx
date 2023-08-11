@@ -15,7 +15,7 @@ import axios from 'axios';
 import LoadingNB from './LoadingNB';
 import ItemNB from '../../components/ItemNB';
 import {URL_GET_LIGHTS} from '../../utils/config';
-
+import {Icon} from 'react-native-elements';
 const WIDTH = Dimensions.get('window').width;
 const HEIGHT = Dimensions.get('window').height;
 interface Item {
@@ -26,8 +26,7 @@ interface Item {
 interface Props {
 	data: Item[] | null | undefined;
 }
-export default function LightNB() {
-
+export default function LightNB({navigation}: {navigation: any}) {
 	const [data, setData] = useState(null);
 	const [loading, setLoading] = useState(true);
 
@@ -56,24 +55,25 @@ export default function LightNB() {
 					{/* <LoadingNB /> */}
 					<View style={styles.header}>
 						<TouchableOpacity style={styles.icon}>
-							<Image
-								source={require('../../assets/icons/addIcon.png')}
-								style={styles.imgIcon}
-							/>
+							<Icon name="add-box" size={24} type="material" style={{padding:0,margin:0}} />
 						</TouchableOpacity>
 						<Text style={styles.textHeader}>Danh sách đèn NB</Text>
-						<TouchableOpacity style={styles.icon}>
-							<Image
-								source={require('../../assets/icons/camera.png')}
-								style={styles.imgIcon}
-							/>
+						<TouchableOpacity
+							style={styles.icon}
+							onPress={() => navigation.navigate('Scanner')}>
+							<Icon name="camera-alt" size={24} type="material" style={{padding:0,margin:0}} />
 						</TouchableOpacity>
 					</View>
 					<View style={styles.listNB}>
 						<FlatList
 							data={data}
 							renderItem={({item}: {item: Item}) => {
-								return <ItemNB item={item} />;
+								return (
+									<ItemNB
+										onPress={() => navigation.navigate('Update')}
+										item={item}
+									/>
+								);
 							}}
 							keyExtractor={item => item._id}
 						/>
@@ -88,6 +88,7 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: '#fff',
+		// height:HEIGHT
 	},
 	header: {
 		flexDirection: 'row',
@@ -121,6 +122,7 @@ const styles = StyleSheet.create({
 	listNB: {
 		width: WIDTH - 16,
 		alignSelf: 'center',
-		marginBottom: 84,
+		marginBottom: 72,
+		height: '100%',
 	},
 });

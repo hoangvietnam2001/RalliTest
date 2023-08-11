@@ -2,6 +2,7 @@ import { Dimensions, StyleSheet, Text, View } from 'react-native'
 import React, { useState } from 'react'
 import { Icon } from 'react-native-elements'
 import ModalDelete from '../../components/layout/ModalDelete';
+import ModalAdd from '../../components/layout/ModalAdd';
 const Info = [
   {
     name: 'MAC',
@@ -9,7 +10,7 @@ const Info = [
   },
   {
     name: 'APPID',
-    data: '988912'
+    data: '988912' 
   },
   {
     name: 'FROMID',
@@ -41,7 +42,7 @@ const Item = ({ title, data }: { title: string, data: string }) => {
   );
 };
 const InformationDetail = () => {
-  const [showAlert, setShow] = useState(true);
+  const [showAlert, setShow] = useState(false);
   const handleSumit = () => {
     setShow(false);
   }
@@ -71,10 +72,7 @@ const InformationDetail = () => {
       </View>
       {
         showAlert && (
-          <ModalDelete
-            onSubmit={handleSumit}
-            onCancle={handleCancle}
-          />
+          <ModalAdd/>
         )
       }
     </View>
