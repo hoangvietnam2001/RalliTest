@@ -31,13 +31,8 @@ export default function LightNB() {
 	const [data, setData] = useState(null);
 	const [loading, setLoading] = useState(true);
 
-	console.log('data:',data);
-
 	// call API to load data
 	useEffect(() => {
-		// setTimeout(() => {
-		// 	setLoading(false);
-		// }, 3000);
 		fetchData();
 	}, []);
 

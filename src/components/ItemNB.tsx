@@ -38,7 +38,7 @@ export default function ItemNB({item}: {item: any}) {
 				<Text
 					style={[styles.nameNB, {color: item.STATUS ? '#005A6F' : '#CACACA'}]
 					}>
-					{item.project}
+					{item.MAC}
 				</Text>
 				<Switch
 					style={styles.switch}
