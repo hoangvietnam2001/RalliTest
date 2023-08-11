@@ -42,7 +42,7 @@ const Item = ({ title, data }: { title: string, data: string }) => {
   );
 };
 const InformationDetail = () => {
-  const [showAlert, setShow] = useState(true);
+  const [showAlert, setShow] = useState(false);
   const handleSumit = () => {
     setShow(false);
   }

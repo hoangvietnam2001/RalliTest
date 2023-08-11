@@ -1,9 +1,9 @@
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import React from 'react';
 
-export default function PopupNB({item}: {item: any}) {
+export default function PopupNB({item, onPress}: {item: any, onPress:()=>void}) {
 	return (
-		<TouchableOpacity style={styles.popup}>
+		<TouchableOpacity style={styles.popup} onPress={onPress}>
 			<Text style={styles.text}>Dự án: {item.project}</Text>
 			<Text style={styles.text}>Địa chỉ server: {item.SERVER_ADDRESS}</Text>
 			<Text style={styles.text}>MAC: {item.MAC}</Text>

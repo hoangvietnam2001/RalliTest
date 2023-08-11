@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import PopupNB from './PopupNB';
-export default function ItemNB({item}: {item: any}) {
+export default function ItemNB({item,  onPress}: {item: any,onPress:any}) {
 	const [toggle, setToggle] = useState(item.STATUS);
 	//
 	const [selectedItem, setSelectedItem] = useState(null);
@@ -38,7 +38,7 @@ export default function ItemNB({item}: {item: any}) {
 				<Text
 					style={[styles.nameNB, {color: item.STATUS ? '#005A6F' : '#CACACA'}]
 					}>
-					{item.MAC}
+					Đèn NB {item.MAC.slice(-4)}
 				</Text>
 				<Switch
 					style={styles.switch}
@@ -48,7 +48,7 @@ export default function ItemNB({item}: {item: any}) {
 				/>
 			</TouchableOpacity>
             {
-                visible ? (<PopupNB item={item}/>):(<></>)
+                visible ? (<PopupNB onPress={onPress} item={item}/>):(<></>)
             }  
 		</View>
 	);

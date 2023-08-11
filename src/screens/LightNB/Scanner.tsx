@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
         color: '#005A6F'
     },
     scanner:{
-        marginTop: HEGHT/4.5,
+        marginTop: HEGHT/5,
         width: WIDTH/1.33,
         height: WIDTH/1.33,
         backgroundColor:'#534444',

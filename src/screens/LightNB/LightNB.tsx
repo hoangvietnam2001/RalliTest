@@ -26,7 +26,7 @@ interface Item {
 interface Props {
 	data: Item[] | null | undefined;
 }
-export default function LightNB() {
+export default function LightNB({navigation}:{navigation: any}) {
 
 	const [data, setData] = useState(null);
 	const [loading, setLoading] = useState(true);
@@ -62,7 +62,7 @@ export default function LightNB() {
 							/>
 						</TouchableOpacity>
 						<Text style={styles.textHeader}>Danh sách đèn NB</Text>
-						<TouchableOpacity style={styles.icon}>
+						<TouchableOpacity style={styles.icon} onPress={()=>navigation.navigate('Scanner')}>
 							<Image
 								source={require('../../assets/icons/camera.png')}
 								style={styles.imgIcon}
@@ -73,7 +73,7 @@ export default function LightNB() {
 						<FlatList
 							data={data}
 							renderItem={({item}: {item: Item}) => {
-								return <ItemNB item={item} />;
+								return <ItemNB onPress={()=>navigation.navigate('Update')} item={item} />;
 							}}
 							keyExtractor={item => item._id}
 						/>
