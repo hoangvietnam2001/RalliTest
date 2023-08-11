@@ -5,20 +5,50 @@ import {
 	SafeAreaView,
 	TouchableOpacity,
 	Image,
+	FlatList,
+	Switch,
+	Dimensions,
+	Modal,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
+import axios from 'axios';
 import LoadingNB from './LoadingNB';
+import ItemNB from '../../components/ItemNB';
+import {URL_GET_LIGHTS} from '../../utils/config';
+
+const WIDTH = Dimensions.get('window').width;
+const HEIGHT = Dimensions.get('window').height;
+interface Item {
+	_id: string;
+	project: string;
+	STATUS: boolean;
+}
+interface Props {
+	data: Item[] | null | undefined;
+}
 export default function LightNB() {
+
+	const [data, setData] = useState(null);
 	const [loading, setLoading] = useState(true);
 
+	// call API to load data
 	useEffect(() => {
-		setTimeout(() => {
+		fetchData();
+	}, []);
+
+	// fetch data
+	const fetchData = async () => {
+		try {
+			const response = await axios.get(URL_GET_LIGHTS);
 			setLoading(false);
-		}, 3000);
-	});
+			setData(response.data);
+		} catch (error) {
+			console.error('Error fetching data:', error);
+		}
+	};
 
 	return (
-        <>
+		<>
 			{loading ? (
 				<LoadingNB />
 			) : (
@@ -39,10 +69,18 @@ export default function LightNB() {
 							/>
 						</TouchableOpacity>
 					</View>
-					<View style={styles.listNB}></View>
+					<View style={styles.listNB}>
+						<FlatList
+							data={data}
+							renderItem={({item}: {item: Item}) => {
+								return <ItemNB item={item} />;
+							}}
+							keyExtractor={item => item._id}
+						/>
+					</View>
 				</SafeAreaView>
 			)}
-            </>
+		</>
 	);
 }
 
@@ -53,14 +91,17 @@ const styles = StyleSheet.create({
 	},
 	header: {
 		flexDirection: 'row',
+		width: 343,
 		height: 48,
 		alignItems: 'center',
 		justifyContent: 'space-between',
-		marginHorizontal: 18,
+		marginHorizontal: 35,
+		marginTop: 16,
+		alignSelf: 'center',
 	},
 	icon: {
-		width: 32,
-		height: 32,
+		width: 24,
+		height: 24,
 		justifyContent: 'center',
 		alignItems: 'center',
 	},
@@ -78,7 +119,8 @@ const styles = StyleSheet.create({
 		color: '#005A6F',
 	},
 	listNB: {
-		flex: 1,
-		backgroundColor: 'yellow',
+		width: WIDTH - 16,
+		alignSelf: 'center',
+		marginBottom: 84,
 	},
 });
