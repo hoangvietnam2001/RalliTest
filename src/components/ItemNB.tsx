@@ -7,7 +7,7 @@ import {
 	Image,
 } from 'react-native';
 import React, {useState} from 'react';
-
+import PopupNB from './PopupNB';
 export default function ItemNB({item}: {item: any}) {
 	const [toggle, setToggle] = useState(item.STATUS);
 	//
@@ -48,11 +48,7 @@ export default function ItemNB({item}: {item: any}) {
 				/>
 			</TouchableOpacity>
             {
-                visible ? (<View style={styles.popup}>
-                    <Text style={styles.text}>Dự án: {item.project}</Text>
-                    <Text style={styles.text}>Địa chỉ server: {item.SERVER_ADDRESS}</Text>
-                    <Text style={styles.text}>MAC: {item.MAC}</Text>
-                </View>):(<></>)
+                visible ? (<PopupNB item={item}/>):(<></>)
             }  
 		</View>
 	);
