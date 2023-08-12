@@ -54,6 +54,14 @@ const InformationDetail:React.FC<Props> = ({navigation, route}) => {
     }
   ];
   const [showAlert, setShow] = useState(false);
+  const handleShow = () =>{
+    if (!item.STATUS){
+      setShow(true);
+    }
+    else{
+      ToastAndroid.show('Đèn đang hoạt động', ToastAndroid.SHORT);
+    }
+  }
   const handleSumit = async () => {
     if (item.STATUS === false){
       API.Delete(item._id);
@@ -79,7 +87,7 @@ const InformationDetail:React.FC<Props> = ({navigation, route}) => {
         <View style = {styles.headerTitleView}>
           <Text style = {styles.headerTitle}>Đèn NB {item.MAC.slice(-4)}</Text>
         </View>
-        <TouchableOpacity style = {styles.headerRight} onPress={()=>setShow(true)}>
+        <TouchableOpacity style = {styles.headerRight} onPress={handleShow}>
           <Icon name='delete' type='material-community' size={24} />
         </TouchableOpacity>
       </View>
