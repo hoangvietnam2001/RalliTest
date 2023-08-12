@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
 		borderRadius: 10,
 		borderWidth: 1,
 		borderColor: 'gray',
+		marginBottom:2
 	},
 	text: {
 		marginVertical: 10,

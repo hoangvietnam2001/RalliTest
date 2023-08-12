@@ -32,7 +32,7 @@ export default function LightNB({navigation}: {navigation: any}) {
 
 	// call API to load data
 	useEffect(() => {
-		fetchData();
+		 fetchData();
 	}, []);
 
 	// fetch data
@@ -45,7 +45,7 @@ export default function LightNB({navigation}: {navigation: any}) {
 			console.error('Error fetching data:', error);
 		}
 	};
-
+   
 	return (
 		<>
 			{loading ? (
@@ -86,9 +86,8 @@ export default function LightNB({navigation}: {navigation: any}) {
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
-		backgroundColor: '#fff',
-		// height:HEIGHT
+		flex: 1,		
+		backgroundColor:'#fff'
 	},
 	header: {
 		flexDirection: 'row',
@@ -122,7 +121,8 @@ const styles = StyleSheet.create({
 	listNB: {
 		width: WIDTH - 16,
 		alignSelf: 'center',
-		marginBottom: 72,
-		height: '100%',
+		marginBottom: 82,
+		height: HEIGHT-82-88,
+	
 	},
 });
