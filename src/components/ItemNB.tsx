@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import PopupNB from './PopupNB';
-export default function ItemNB({item,  onPress}: {item: any,onPress:any}) {
+export default function ItemNB({item, onPress}: {item: any; onPress: any}) {
 	const [toggle, setToggle] = useState(item.STATUS);
 	//
 	const [selectedItem, setSelectedItem] = useState(null);
@@ -17,8 +17,8 @@ export default function ItemNB({item,  onPress}: {item: any,onPress:any}) {
 		setSelectedItem(item);
 		setVisible(!visible);
 	};
-	
-	return (
+
+	return ( 
 		<View style={styles.itemRound}>
 			<TouchableOpacity
 				style={[styles.items]}
@@ -34,10 +34,8 @@ export default function ItemNB({item,  onPress}: {item: any,onPress:any}) {
 						source={require(`../assets/icons/PlayHover.png`)}
 					/>
 				)}
-
 				<Text
-					style={[styles.nameNB, {color: item.STATUS ? '#005A6F' : '#CACACA'}]
-					}>
+					style={[styles.nameNB, {color: item.STATUS ? '#005A6F' : '#CACACA'}]}>
 					Đèn NB {item.MAC.slice(-4)}
 				</Text>
 				<Switch
@@ -47,9 +45,7 @@ export default function ItemNB({item,  onPress}: {item: any,onPress:any}) {
 					trackColor={{false: 'gray', true: '#005A6F'}}
 				/>
 			</TouchableOpacity>
-            {
-                visible ? (<PopupNB onPress={onPress} item={item}/>):(<></>)
-            }  
+			{visible ? <PopupNB onPress={onPress} item={item} /> : <></>}
 		</View>
 	);
 }
@@ -57,23 +53,23 @@ export default function ItemNB({item,  onPress}: {item: any,onPress:any}) {
 const styles = StyleSheet.create({
 	itemRound: {
 		borderRadius: 10,
-        alignItems:'center',
-        width:343,
-        alignSelf:'center',
+		alignItems: 'center',
+		width: 343,
+		alignSelf: 'center',
 	},
 	items: {
 		flexDirection: 'row',
 		height: 60,
 		alignItems: 'center',
 		borderRadius: 10,
-        width:343
+		width: 343,
 	},
 	iconNB: {
 		width: 24,
 		height: 24,
 	},
 	nameNB: {
-		width:260,
+		width: 260,
 		marginLeft: 12,
 		fontFamily: 'ABeeZee-Regular',
 		fontWeight: '400',
@@ -87,22 +83,22 @@ const styles = StyleSheet.create({
 		right: 0,
 	},
 
-    popup:{
-        width:338,
-        height:160,
-        borderRadius:10,
-        shadowRadius:20,
-        borderWidth:1,
-        borderColor:'gray'
-    },
-    text:{
-        marginVertical:10,
-        fontSize:18,
-        fontWeight:'400',
-        fontFamily:'ABeeZee-Regular',
-        fontStyle:'italic',
-        lineHeight:21.28,
-        color:'#005A6F',
-        marginLeft:32,
-    },
+	popup: {
+		width: 338,
+		height: 160,
+		borderRadius: 10,
+		shadowRadius: 20,
+		borderWidth: 1,
+		borderColor: 'gray',
+	},
+	text: {
+		marginVertical: 10,
+		fontSize: 18,
+		fontWeight: '400',
+		fontFamily: 'ABeeZee-Regular',
+		fontStyle: 'italic',
+		lineHeight: 21.28,
+		color: '#005A6F',
+		marginLeft: 32,
+	},
 });

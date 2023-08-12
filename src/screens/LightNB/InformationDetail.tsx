@@ -1,56 +1,88 @@
-import { Dimensions, StyleSheet, Text, View } from 'react-native'
-import React, { useState } from 'react'
+import { Dimensions, SafeAreaView, StyleSheet, Text, TextBase, ToastAndroid, TouchableOpacity, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import { Icon } from 'react-native-elements'
 import ModalDelete from '../../components/layout/ModalDelete';
 import ModalAdd from '../../components/layout/ModalAdd';
-const Info = [
-  {
-    name: 'MAC',
-    data: '90894234'
-  },
-  {
-    name: 'APPID',
-    data: '988912'
-  },
-  {
-    name: 'FROMID',
-
-  },
-  {
-    name: 'CSEID',
-
-  },
-  {
-    name: 'CSENAME',
-
-  },
-  {
-    name: 'MQTT',
-  }
-];
-
+import truncateText from '../../constants/truncateText';
+import Rall from '../../services/API';
+const API = new Rall();
 const Item = ({ title, data }: { title: string, data: string }) => {
+  const text = truncateText(data);
   return (
     <View style={styles.titleView}>
       <View>
         <Text style={styles.title}>{title}</Text>
       </View>
       <View>
-        <Text style={styles.data}>{data}</Text>
+        <Text style={styles.data}>{text}</Text>
       </View>
     </View>
   );
 };
-const InformationDetail = () => {
+
+interface Props{
+  navigation?: any,
+  route?: any
+}
+const InformationDetail:React.FC<Props> = ({navigation, route}) => {
+  const {item} = route.params;
+  console.log(item._id);
+  const Info = [
+    {
+      name: 'MAC',
+      data: item.MAC
+    },
+    {
+      name: 'APPID',
+      data: item.APP_ID
+    },
+    {
+      name: 'FROMID',
+      data: item.FROM_ID
+    },
+    {
+      name: 'CSEID',
+      data: item.CSE_ID,
+    },
+    {
+      name: 'CSENAME',
+      data: item.CSE_NAME,
+    },
+    {
+      name: 'MQTT',
+      data: item.MQTT?item.MQTT:''
+    }
+  ];
   const [showAlert, setShow] = useState(false);
-  const handleSumit = () => {
+  const handleSumit = async () => {
+    if (item.STATUS === false){
+      API.Delete(item._id);
+      navigation.goBack();
+    }
+    else{
+      ToastAndroid.show('Đang hoạt động', ToastAndroid.SHORT);
+    }
     setShow(false);
   }
   const handleCancle = () => {
     setShow(false);
   }
+  useEffect(()=>{
+
+  },[])
   return (
-    <View style={[styles.container, { backgroundColor: showAlert === false ? 'white' : '#EEEEEE' }]}>
+    <SafeAreaView style={[styles.container, { backgroundColor: showAlert === false ? 'white' : '#EEEEEE' }]}>
+      <View style={styles.header}>
+        <TouchableOpacity style={styles.headerBack} onPress={()=>navigation.goBack()}>
+          <Icon name='keyboard-backspace' type='material' size={40} />
+        </TouchableOpacity>
+        <View style = {styles.headerTitleView}>
+          <Text style = {styles.headerTitle}>Đèn NB {item.MAC.slice(-4)}</Text>
+        </View>
+        <TouchableOpacity style = {styles.headerRight} onPress={()=>setShow(true)}>
+          <Icon name='delete' type='material-community' size={24} />
+        </TouchableOpacity>
+      </View>
       <View style={styles.iconView}>
         <Icon
           name='lightbulb-on-outline'
@@ -58,7 +90,7 @@ const InformationDetail = () => {
           size={131}
         />
       </View>
-
+      <Text style = {styles.projectName}>{item.project}</Text>
       <View>
         {
           Info.map((doc: any, index: number) => (
@@ -78,7 +110,7 @@ const InformationDetail = () => {
           />
         )
       }
-    </View>
+    </SafeAreaView>
   )
 }
 
@@ -91,9 +123,40 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
   },
+  header: {
+    width: '100%',
+    height: 48,
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  headerBack:{
+    width: '20%'
+  },
+  headerTitleView:{
+    width: '60%',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  headerTitle:{
+		fontFamily: 'ABeeZee-Regular',
+		fontWeight: '400',
+		fontSize: 18,
+		lineHeight: 21.28,
+		textAlign: 'center',
+		color: '#005A6F',
+  },
+  headerRight:{
+    width: '20%'
+  },
   iconView: {
-    marginTop: 50,
-    marginBottom: 60,
+    marginTop: 30,
+    marginBottom: 30,
+  },
+  projectName:{
+    fontFamily: 'ABeeZee',
+    color: '#005A6F',
+    fontSize: 18,
+    marginBottom: 20,
   },
   titleView: {
     width: WIDTH / 1.2,

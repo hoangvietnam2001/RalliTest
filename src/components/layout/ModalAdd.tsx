@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { Dimensions, StyleSheet, Text, View, TouchableOpacity, Modal } from 'react-native'
 import React, { useState } from 'react'
 import { Icon } from 'react-native-elements'
 const Info = [
@@ -39,41 +39,43 @@ const Item = ({ title, data }: { title: string, data: string }) => {
         </View>
     );
 };
-const ModalAdd = ({onSave}:{onSave?:()=>void}) => {
+const ModalAdd = ({ onSave }: { onSave?: () => void }) => {
     return (
-        <View style={[styles.container]}>
-            <Text style={styles.titleHeader}>Thêm thông tin đèn NB</Text>
-            <View style = {{}}>
-                {
-                    Info.map((doc: any, index: number) => (
-                        <Item
-                            key={index}
-                            title={doc.name}
-                            data={doc.data}
-                        />
-                    ))
-                }
+        <Modal visible transparent>
+            <View style={[styles.container]}>
+                <Text style={styles.titleHeader}>Thêm thông tin đèn NB</Text>
+                <View style={{}}>
+                    {
+                        Info.map((doc: any, index: number) => (
+                            <Item
+                                key={index}
+                                title={doc.name}
+                                data={doc.data}
+                            />
+                        ))
+                    }
+                </View>
+                <TouchableOpacity style={styles.btnSave} onPress={onSave}>
+                    <Text style={styles.btnText}>Lưu</Text>
+                </TouchableOpacity>
             </View>
-            <TouchableOpacity style = {styles.btnSave} onPress={onSave}>
-                <Text style = {styles.btnText}>Lưu</Text>
-            </TouchableOpacity>
-        </View>
+        </Modal>
     )
 };
 const WIDTH = Dimensions.get('screen').width;
 const HEIGHT = Dimensions.get('screen').height;
 const styles = StyleSheet.create({
     container: {
-        marginHorizontal:15,
+        marginHorizontal: 15,
         width: WIDTH / 1.1,
-        height: 255,
+        height: HEIGHT/2.5,
         position: 'absolute',
         top: 100,
         borderRadius: 15,
         backgroundColor: 'white',
         alignItems: "center"
     },
-    titleHeader:{
+    titleHeader: {
         color: '#005A6F',
         fontSize: 15,
         lineHeight: 40,
@@ -98,7 +100,7 @@ const styles = StyleSheet.create({
         fontFamily: 'ABeeZee-Italic',
         lineHeight: 30,
     },
-    btnSave:{
+    btnSave: {
         width: 30,
         height: 25,
         backgroundColor: '#005A6F',
@@ -107,7 +109,7 @@ const styles = StyleSheet.create({
         marginTop: 5,
         borderRadius: 5,
     },
-    btnText:{
+    btnText: {
         color: 'white',
         fontSize: 13,
     }

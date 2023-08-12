@@ -9,14 +9,13 @@ export default function PopupNB({item, onPress}: {item: any, onPress:()=>void}) 
 			<Text style={styles.text}>MAC: {item.MAC}</Text>
 		</TouchableOpacity>
 	);
-}
+} 
 
 const styles = StyleSheet.create({
 	popup: {
 		width: 338,
 		height: 160,
 		borderRadius: 10,
-		shadowRadius: 20,
 		borderWidth: 1,
 		borderColor: 'gray',
 	},

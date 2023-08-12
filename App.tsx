@@ -10,6 +10,6 @@ export default function App() {
 			<ScannerStack />
 		</NavigationContainer>
 	);
-}
+} 
 
 const styles = StyleSheet.create({});

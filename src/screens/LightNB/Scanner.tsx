@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
         backgroundColor:'#534444',
         borderRadius: 20,
     }
-})
+}) 
 
 
 export default Scanner;
