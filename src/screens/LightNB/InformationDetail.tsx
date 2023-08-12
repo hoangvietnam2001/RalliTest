@@ -26,7 +26,6 @@ interface Props{
 }
 const InformationDetail:React.FC<Props> = ({navigation, route}) => {
   const {item} = route.params;
-  console.log(item._id);
   const Info = [
     {
       name: 'MAC',

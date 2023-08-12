@@ -10,13 +10,17 @@ import {
 	Dimensions,
 	Modal,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import axios from 'axios';
 import LoadingNB from './LoadingNB';
 import ItemNB from '../../components/ItemNB';
 import {URL_GET_LIGHTS} from '../../utils/config';
 import {Icon} from 'react-native-elements';
 import ModalAdd from '../../components/layout/ModalAdd';
+import Rall from '../../services/API';
+
+const API = new Rall();
+
 const WIDTH = Dimensions.get('window').width;
 const HEIGHT = Dimensions.get('window').height;
 interface Item {
@@ -31,14 +35,16 @@ export default function LightNB({navigation}: {navigation: any}) {
 	const [data, setData] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const [showAdd, setShow] = useState(false);
-
+	const [dataAdd, setDataAdd] = useState([]);
 	// call API to load data
-	useEffect(() => {
+	useEffect(()=>{
+
 		fetchData();
-	}, []);
+	}
+	,[]);
 
 	// fetch data
-	const fetchData = async () => {
+	const fetchData = async() => {
 		try {
 			const response = await axios.get(URL_GET_LIGHTS);
 			setLoading(false);
@@ -50,10 +56,12 @@ export default function LightNB({navigation}: {navigation: any}) {
 	const handleShowAdd = () =>{
 		setShow(true);
 	}
-	const handleSave = () =>{
+	const handleSave = async() =>{
 		setShow(false)
-	} 
-
+		API.Create(dataAdd);	} 
+	const FetchData = (value: any)=>{
+		setDataAdd(value)
+	}
 	return (
 		<>
 			{loading ? (
@@ -89,7 +97,8 @@ export default function LightNB({navigation}: {navigation: any}) {
 					{
 						showAdd && (
 							<ModalAdd
-							onSave={handleSave}
+							onSubmit={handleSave}
+							onSave={FetchData}
 							/>
 						)
 					}
