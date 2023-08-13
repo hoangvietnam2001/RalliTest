@@ -31,34 +31,35 @@ interface Item {
 interface Props {
 	data: Item[] | null | undefined;
 }
-export default function LightNB({ navigation }: { navigation: any }) {
-	const [data, setData] = useState(null);
+export default function LightNB({navigation}: {navigation: any}) {
+	const [data, setData] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [showAdd, setShow] = useState(false);
 	const [dataAdd, setDataAdd] = useState([]);
+	const [isFetching, setIsFetching] = useState(false); //load du lieu
 	const [added, setAdd] = useState(true);
 	// call API to load data
+
 	useEffect(() => {
 		fetchData();
-	}
-		, []);
-
+		console.log('re-render');
+	}, [isFetching]);
+ 
 	// fetch data
 	const fetchData = async () => {
 		try {
 			const response = await axios.get(URL_GET_LIGHTS);
 			setLoading(false);
 			setData(response.data);
+			setIsFetching(false);
 		} catch (error) {
 			console.error('Error fetching data:', error);
 		}
-	}
+	};
+
 	const handleShowAdd = () => {
 		setShow(true);
-	}
-	const FetchData = (value: any) => {
-		setDataAdd(value)
-	}
+	};
 	const handleSave = () => {
 		let kt = 0;
 		dataAdd.map((doc: any, index: number) => {
@@ -75,6 +76,14 @@ export default function LightNB({ navigation }: { navigation: any }) {
 		}
 		setAdd(true);
 	}
+	const FetchData = (value: any) => {
+		setDataAdd(value);
+	};
+
+	// set isFetching
+	const handleSetIsFetching = () => {
+		setIsFetching(true);
+	};
 	const handleCancle = () => {
 		console.log(dataAdd)
 		setShow(false);
@@ -87,17 +96,30 @@ export default function LightNB({ navigation }: { navigation: any }) {
 			{loading ? (
 				<LoadingNB />
 			) : (
-				<SafeAreaView style={[styles.container, { backgroundColor: showAdd ? '#CCCCCC' : '#FFF' }]}>
+				<SafeAreaView
+					style={[
+						styles.container,
+						{backgroundColor: showAdd ? '#CCCCCC' : '#FFF'},
+					]}>
 					{/* <LoadingNB /> */}
 					<View style={styles.header}>
 						<TouchableOpacity style={{}} onPress={handleShowAdd}>
-							<Icon name="add-box" size={24} type="material" style={{ padding: 0, margin: 0 }} />
+							<Icon
+								name="add-box"
+								size={24}
+								type="material"
+								style={{padding: 0, margin: 0}}
+							/>
 						</TouchableOpacity>
 						<Text style={styles.textHeader}>Danh sách đèn NB</Text>
 						<TouchableOpacity
-							style={{}}
 							onPress={() => navigation.navigate('Scanner')}>
-							<Icon name="camera-alt" size={24} type="material" style={{ padding: 0, margin: 0 }} />
+							<Icon
+								name="camera-alt"
+								size={24}
+								type="material"
+								style={{padding: 0, margin: 0}}
+							/>
 						</TouchableOpacity>
 					</View>
 					<View style={styles.listNB}>
@@ -106,7 +128,7 @@ export default function LightNB({ navigation }: { navigation: any }) {
 							renderItem={({ item }: { item: Item }) => {
 								return (
 									<ItemNB
-										onPress={() => navigation.navigate('Update', { item })}
+										onPress={() => navigation.navigate('Update', {item,'handleSetFetching':handleSetIsFetching})}
 										item={item}
 									/>
 								);
@@ -134,7 +156,6 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: '#fff',
-		// height:HEIGHT
 	},
 	header: {
 		flexDirection: 'row',
@@ -146,17 +167,6 @@ const styles = StyleSheet.create({
 		marginTop: 16,
 		alignSelf: 'center',
 	},
-	// icon: {
-	// 	width: 24,
-	// 	height: 24,
-	// 	justifyContent: 'center',
-	// 	alignItems: 'center',
-	// },
-	// imgIcon: {
-	// 	width: 24,
-	// 	height: 24,
-	// 	resizeMode: 'stretch',
-	// },
 	textHeader: {
 		fontFamily: 'ABeeZee-Regular',
 		fontWeight: '400',
@@ -168,7 +178,7 @@ const styles = StyleSheet.create({
 	listNB: {
 		width: WIDTH - 16,
 		alignSelf: 'center',
-		marginBottom: 72,
-		// height: '100%',
+		marginBottom: 82,
+		height: HEIGHT - 82 - 88,
 	},
 });

@@ -7,7 +7,6 @@ export default class Rall {
     async Create(data: any){
         try{
             const response = await axios.post(URL_POST_CREATE_LIGHTS, datatoObject(data));
-            console.log(response.data);
         }
         catch(e: any){
             console.log(e.message+'API');
@@ -17,7 +16,6 @@ export default class Rall {
     async Delete(id: any){
         try{
             const response = await axios.delete(URL_DELETE_LIGHT + id);
-            console.log(response);
         }
         catch(e:any){
             console.log(e.message)

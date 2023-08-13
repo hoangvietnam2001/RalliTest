@@ -101,7 +101,7 @@ const ModalAdd: React.FC<PropsAdd> = ({isAdd, onSave, onSubmit, onCancle }) => {
         <Modal visible transparent>
             <View style={[styles.container]}>
                 <Text style={styles.titleHeader}>Thêm thông tin đèn NB</Text>
-                <View style={{}}>
+                <View>
                     {
                         Info.map((doc: any, index: number) => (
                             <Item
@@ -169,10 +169,11 @@ const styles = StyleSheet.create({
     btnView: {
         flexDirection: 'row',
         width: 200,
-        justifyContent: 'space-around'
+        justifyContent: 'space-around',
+        marginBottom:10
     },
     btnSave: {
-        width: 30,
+        width: 50,
         height: 25,
         backgroundColor: '#005A6F',
         justifyContent: 'center',
@@ -185,7 +186,7 @@ const styles = StyleSheet.create({
         fontSize: 13,
     },
     btnCancle: {
-        width: 30,
+        width: 50,
         height: 25,
         backgroundColor: 'red',
         justifyContent: 'center',

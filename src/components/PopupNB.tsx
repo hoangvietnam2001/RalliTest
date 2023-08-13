@@ -2,6 +2,7 @@ import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import React from 'react';
 
 export default function PopupNB({item, onPress}: {item: any, onPress:()=>void}) {
+	
 	return (
 		<TouchableOpacity style={styles.popup} onPress={onPress}>
 			<Text style={styles.text}>Dự án: {item.project}</Text>
@@ -18,6 +19,7 @@ const styles = StyleSheet.create({
 		borderRadius: 10,
 		borderWidth: 1,
 		borderColor: 'gray',
+		marginBottom:2
 	},
 	text: {
 		marginVertical: 10,

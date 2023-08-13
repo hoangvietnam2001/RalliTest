@@ -17,7 +17,7 @@ export default function ItemNB({item, onPress}: {item: any; onPress: any}) {
 		setSelectedItem(item);
 		setVisible(!visible);
 	};
-
+	
 	return ( 
 		<View style={styles.itemRound}>
 			<TouchableOpacity
@@ -45,7 +45,7 @@ export default function ItemNB({item, onPress}: {item: any; onPress: any}) {
 					trackColor={{false: 'gray', true: '#005A6F'}}
 				/>
 			</TouchableOpacity>
-			{visible ? <PopupNB onPress={onPress} item={item} /> : <></>}
+			{visible ? <PopupNB onPress={onPress} item={item}/> : <></>}
 		</View>
 	);
 }
