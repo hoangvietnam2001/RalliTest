@@ -1,5 +1,5 @@
 import React from "react";
-import { Dimensions, StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { Dimensions, StyleSheet, Text, View, TouchableOpacity, Modal } from "react-native";
 import { Button } from "react-native-elements";
 
 interface Props {
@@ -9,38 +9,39 @@ interface Props {
 
 const ModalDelete: React.FC<Props> = ({ onSubmit, onCancle }) => {
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Xác nhận xoá đèn</Text>
-            <View style={styles.main}>
-                <View style={styles.contentView}>
-                    <Text style={styles.content}>
-                        Xoá đèn NB chưa được config ra khỏi hệ thống. Các đèn đã config sẽ xoá trên web
-                    </Text>
-                </View>
-                <Text style={styles.alert}>Lưu ý: Thao tác này không thể khôi phục.</Text>
-                <View style={styles.buttonView}>
-                    <View>
-                        <TouchableOpacity
-                            style={styles.btnSubmit}
-                            onPress={onSubmit}
-                        >
-                            <Text style={styles.titleSubmit}>Đồng ý</Text>
-                        </TouchableOpacity>
+        <Modal transparent visible>
+            <View style={styles.container}>
+                <Text style={styles.title}>Xác nhận xoá đèn</Text>
+                <View style={styles.main}>
+                    <View style={styles.contentView}>
+                        <Text style={styles.content}>
+                            Xoá đèn NB chưa được config ra khỏi hệ thống. Các đèn đã config sẽ xoá trên web
+                        </Text>
                     </View>
-                    <View>
+                    <Text style={styles.alert}>Lưu ý: Thao tác này không thể khôi phục.</Text>
+                    <View style={styles.buttonView}>
                         <View>
-
                             <TouchableOpacity
-                                style={styles.btnCancle}
-                                onPress={onCancle}
+                                style={styles.btnSubmit}
+                                onPress={onSubmit}
                             >
-                                <Text style={styles.titleCancle}>Huỷ</Text>
+                                <Text style={styles.titleSubmit}>Đồng ý</Text>
                             </TouchableOpacity>
+                        </View>
+                        <View>
+                            <View>
+                                <TouchableOpacity
+                                    style={styles.btnCancle}
+                                    onPress={onCancle}
+                                >
+                                    <Text style={styles.titleCancle}>Huỷ</Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
                     </View>
                 </View>
             </View>
-        </View>
+        </Modal>
     );
 };
 const WIDTH = Dimensions.get('screen').width;
@@ -53,7 +54,8 @@ const styles = StyleSheet.create({
         marginVertical: HEIGHT / 3.5,
         borderRadius: 15,
         backgroundColor: 'white',
-        alignItems: "center"
+        alignItems: "center",
+        marginHorizontal: (WIDTH-WIDTH/1.2)/2,
     },
     title: {
         alignSelf: "center",

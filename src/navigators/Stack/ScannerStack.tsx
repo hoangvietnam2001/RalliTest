@@ -29,13 +29,7 @@ const ScannerStack = () => {
                 name='Update'
                 component={InformationDetail}
                 options={{
-                    headerRight: () => (
-                        <TouchableOpacity style = {{marginRight: 20}}>
-                            <Icon name='delete' type='material-community' size={24} />
-                        </TouchableOpacity>
-                    ),
-                    headerTitleAlign:'center'
-                    
+                    headerShown: false,
                 }}
             />
         </Stack.Navigator>

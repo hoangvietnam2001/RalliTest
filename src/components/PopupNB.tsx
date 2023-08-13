@@ -2,6 +2,7 @@ import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import React from 'react';
 
 export default function PopupNB({item, onPress}: {item: any, onPress:()=>void}) {
+	
 	return (
 		<TouchableOpacity style={styles.popup} onPress={onPress}>
 			<Text style={styles.text}>Dự án: {item.project}</Text>
