@@ -65,8 +65,8 @@ const Item: React.FC<Props> = ({ title, data, onChange }) => {
                     <TextInput
                         value={ItemData}
                         placeholder={`${title}`}
-                        autoFocus
                         style={styles.input}
+                        autoFocus
                         onChangeText={(value) => handleDataChange(value)}
                     />
                 </TouchableWithoutFeedback>
@@ -77,12 +77,11 @@ const Item: React.FC<Props> = ({ title, data, onChange }) => {
 
 
 interface PropsAdd {
-    isAdd: boolean
     onSave?: (value: any[]) => void,
     onSubmit?: () => void,
     onCancle?: () => void,
 }
-const ModalAdd: React.FC<PropsAdd> = ({isAdd, onSave, onSubmit, onCancle }) => {
+const ModalAdd: React.FC<PropsAdd> = ({onSave, onSubmit, onCancle }) => {
     const [Project, setProject] = useState(Info);
     const handleChange = (value: any, index: number) => {
         const newData = [...Project];
@@ -94,8 +93,6 @@ const ModalAdd: React.FC<PropsAdd> = ({isAdd, onSave, onSubmit, onCancle }) => {
     };
     useEffect(()=>{
        setProject(Info.map((doc: any)=>({...doc,data:''})))
-    //    console.log(Info.map((doc: any)=>({...doc,data:''})))
-    console.log(Project)
     },[])
     return (
         <Modal visible transparent>

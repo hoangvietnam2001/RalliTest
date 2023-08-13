@@ -9,6 +9,7 @@ import {
 	Switch,
 	Dimensions,
 	Modal,
+	ToastAndroid,
 } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
@@ -37,7 +38,6 @@ export default function LightNB({navigation}: {navigation: any}) {
 	const [showAdd, setShow] = useState(false);
 	const [dataAdd, setDataAdd] = useState([]);
 	const [isFetching, setIsFetching] = useState(false); //load du lieu
-	const [added, setAdd] = useState(true);
 	// call API to load data
 
 	useEffect(() => {
@@ -62,19 +62,30 @@ export default function LightNB({navigation}: {navigation: any}) {
 	};
 	const handleSave = () => {
 		let kt = 0;
-		dataAdd.map((doc: any, index: number) => {
-			if (doc.data === '') {
-				console.log(index)
-				kt = 1;
-				return;
-			}
-		})
-		if (kt === 0) {
+		if (dataAdd.length === 0){
+			kt = -1
+		}
+		else{
+			dataAdd.map((doc: any, index: number) => {
+				if (doc.data === '') {
+					console.log(index)
+					kt = 1;
+					return;
+				}
+			})
+		}
+		if (kt === -1){
+			ToastAndroid.show('Chưa nhập thông tin', ToastAndroid.SHORT);
+		}
+		else if (kt === 1){
+
+		}
+		else {
 			setShow(false)
 			API.Create(dataAdd);
+			setDataAdd([])
 			console.log('Ok');
 		}
-		setAdd(true);
 	}
 	const FetchData = (value: any) => {
 		setDataAdd(value);
@@ -85,9 +96,7 @@ export default function LightNB({navigation}: {navigation: any}) {
 		setIsFetching(true);
 	};
 	const handleCancle = () => {
-		console.log(dataAdd)
 		setShow(false);
-		setAdd(true);
 		setDataAdd([])
 	}
 
@@ -139,7 +148,6 @@ export default function LightNB({navigation}: {navigation: any}) {
 					{
 						showAdd && (
 							<ModalAdd
-								isAdd = {added}
 								onSubmit={handleSave}
 								onSave={FetchData}
 								onCancle={handleCancle}
