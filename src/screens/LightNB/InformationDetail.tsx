@@ -7,7 +7,7 @@ import {
 	ToastAndroid,
 	TouchableOpacity,
 	View,
-	LogBox
+	LogBox,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {Icon} from 'react-native-elements';
@@ -88,7 +88,6 @@ const InformationDetail: React.FC<Props> = ({navigation, route}) => {
 	const handleCancle = () => {
 		setShow(false);
 	};
-
 	return (
 		<SafeAreaView
 			style={[
