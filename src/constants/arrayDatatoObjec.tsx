@@ -1,17 +1,16 @@
 export default function datatoObject(data: any) {
-    console.log(data)
     const object = {
-      project: data[0],
+      project: data[0].data,
       vendor: "0",
-      SERVER_ADDRESS: data[1],
-      SERVER_MQTT_PORT: data[2],
-      SERVER_MQTT_USER: data[3],
-      SERVER_MQTT_PASS: data[4],
-      CSE_ID: data[5],
-      CSE_NAME: data[6],
-      FROM_ID: data[7],
-      APP_ID: data[8],
-      MAC: data[9],
+      SERVER_ADDRESS: data[1].data,
+      SERVER_MQTT_PORT: data[2].data,
+      SERVER_MQTT_USER: data[3].data,
+      SERVER_MQTT_PASS: data[4].data,
+      CSE_ID: data[5].data,
+      CSE_NAME: data[6].data,
+      FROM_ID: data[7].data,
+      APP_ID: data[8].data,
+      MAC: data[9].data,
     };
   
     return object;

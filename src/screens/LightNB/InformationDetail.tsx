@@ -6,6 +6,7 @@ import ModalAdd from '../../components/layout/ModalAdd';
 import truncateText from '../../constants/truncateText';
 import Rall from '../../services/API';
 const API = new Rall();
+
 const Item = ({ title, data }: { title: string, data: string }) => {
   const text = truncateText(data);
   return (
@@ -20,12 +21,13 @@ const Item = ({ title, data }: { title: string, data: string }) => {
   );
 };
 
-interface Props{
+interface Props {
   navigation?: any,
   route?: any
 }
-const InformationDetail:React.FC<Props> = ({navigation, route}) => {
-  const {item} = route.params;
+
+const InformationDetail: React.FC<Props> = ({ navigation, route }) => {
+  const { item } = route.params;
   const Info = [
     {
       name: 'MAC',
@@ -49,24 +51,24 @@ const InformationDetail:React.FC<Props> = ({navigation, route}) => {
     },
     {
       name: 'MQTT',
-      data: item.MQTT?item.MQTT:''
+      data: item.MQTT ? item.MQTT : ''
     }
   ];
   const [showAlert, setShow] = useState(false);
-  const handleShow = () =>{
-    if (!item.STATUS){
+  const handleShow = () => {
+    if (!item.STATUS) {
       setShow(true);
     }
-    else{
+    else {
       ToastAndroid.show('Đèn đang hoạt động', ToastAndroid.SHORT);
     }
   }
   const handleSumit = async () => {
-    if (item.STATUS === false){
+    if (item.STATUS === false) {
       API.Delete(item._id);
       navigation.goBack();
     }
-    else{
+    else {
       ToastAndroid.show('Đang hoạt động', ToastAndroid.SHORT);
     }
     setShow(false);
@@ -74,19 +76,23 @@ const InformationDetail:React.FC<Props> = ({navigation, route}) => {
   const handleCancle = () => {
     setShow(false);
   }
-  useEffect(()=>{
+  useEffect(() => {
 
-  },[])
+  }, [])
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: showAlert === false ? 'white' : '#EEEEEE' }]}>
       <View style={styles.header}>
-        <TouchableOpacity style={styles.headerBack} onPress={()=>navigation.goBack()}>
-          <Icon name='keyboard-backspace' type='material' size={40} />
+        <TouchableOpacity
+          style={styles.headerBack}
+          onPress={() => navigation.goBack()}>
+          <Icon
+            name='keyboard-backspace'
+            type='material' size={40} />
         </TouchableOpacity>
-        <View style = {styles.headerTitleView}>
-          <Text style = {styles.headerTitle}>Đèn NB {item.MAC.slice(-4)}</Text>
+        <View style={styles.headerTitleView}>
+          <Text style={styles.headerTitle}>Đèn NB {item.MAC.slice(-4)}</Text>
         </View>
-        <TouchableOpacity style = {styles.headerRight} onPress={handleShow}>
+        <TouchableOpacity style={styles.headerRight} onPress={handleShow}>
           <Icon name='delete' type='material-community' size={24} />
         </TouchableOpacity>
       </View>
@@ -97,7 +103,7 @@ const InformationDetail:React.FC<Props> = ({navigation, route}) => {
           size={131}
         />
       </View>
-      <Text style = {styles.projectName}>{item.project}</Text>
+      <Text style={styles.projectName}>{item.project}</Text>
       <View>
         {
           Info.map((doc: any, index: number) => (
@@ -136,30 +142,30 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center'
   },
-  headerBack:{
+  headerBack: {
     width: '20%'
   },
-  headerTitleView:{
+  headerTitleView: {
     width: '60%',
     justifyContent: 'center',
     alignItems: 'center'
   },
-  headerTitle:{
-		fontFamily: 'ABeeZee-Regular',
-		fontWeight: '400',
-		fontSize: 18,
-		lineHeight: 21.28,
-		textAlign: 'center',
-		color: '#005A6F',
+  headerTitle: {
+    fontFamily: 'ABeeZee-Regular',
+    fontWeight: '400',
+    fontSize: 18,
+    lineHeight: 21.28,
+    textAlign: 'center',
+    color: '#005A6F',
   },
-  headerRight:{
+  headerRight: {
     width: '20%'
   },
   iconView: {
     marginTop: 30,
     marginBottom: 30,
   },
-  projectName:{
+  projectName: {
     fontFamily: 'ABeeZee',
     color: '#005A6F',
     fontSize: 18,

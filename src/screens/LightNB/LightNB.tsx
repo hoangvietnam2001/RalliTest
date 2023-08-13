@@ -10,12 +10,12 @@ import {
 	Dimensions,
 	Modal,
 } from 'react-native';
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 import LoadingNB from './LoadingNB';
 import ItemNB from '../../components/ItemNB';
-import {URL_GET_LIGHTS} from '../../utils/config';
-import {Icon} from 'react-native-elements';
+import { URL_GET_LIGHTS } from '../../utils/config';
+import { Icon } from 'react-native-elements';
 import ModalAdd from '../../components/layout/ModalAdd';
 import Rall from '../../services/API';
 
@@ -31,20 +31,20 @@ interface Item {
 interface Props {
 	data: Item[] | null | undefined;
 }
-export default function LightNB({navigation}: {navigation: any}) {
+export default function LightNB({ navigation }: { navigation: any }) {
 	const [data, setData] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const [showAdd, setShow] = useState(false);
 	const [dataAdd, setDataAdd] = useState([]);
+	const [added, setAdd] = useState(true);
 	// call API to load data
-	useEffect(()=>{
-
+	useEffect(() => {
 		fetchData();
 	}
-	,[]);
+		, []);
 
 	// fetch data
-	const fetchData = async() => {
+	const fetchData = async () => {
 		try {
 			const response = await axios.get(URL_GET_LIGHTS);
 			setLoading(false);
@@ -52,41 +52,61 @@ export default function LightNB({navigation}: {navigation: any}) {
 		} catch (error) {
 			console.error('Error fetching data:', error);
 		}
-	};
-	const handleShowAdd = () =>{
+	}
+	const handleShowAdd = () => {
 		setShow(true);
 	}
-	const handleSave = async() =>{
-		setShow(false)
-		API.Create(dataAdd);	} 
-	const FetchData = (value: any)=>{
+	const FetchData = (value: any) => {
 		setDataAdd(value)
 	}
+	const handleSave = () => {
+		let kt = 0;
+		dataAdd.map((doc: any, index: number) => {
+			if (doc.data === '') {
+				console.log(index)
+				kt = 1;
+				return;
+			}
+		})
+		if (kt === 0) {
+			setShow(false)
+			API.Create(dataAdd);
+			console.log('Ok');
+		}
+		setAdd(true);
+	}
+	const handleCancle = () => {
+		console.log(dataAdd)
+		setShow(false);
+		setAdd(true);
+		setDataAdd([])
+	}
+
 	return (
 		<>
 			{loading ? (
 				<LoadingNB />
 			) : (
-				<SafeAreaView style={[styles.container, {backgroundColor: showAdd?'#CCCCCC': '#FFF'}]}>
+				<SafeAreaView style={[styles.container, { backgroundColor: showAdd ? '#CCCCCC' : '#FFF' }]}>
 					{/* <LoadingNB /> */}
 					<View style={styles.header}>
 						<TouchableOpacity style={{}} onPress={handleShowAdd}>
-							<Icon name="add-box" size={24} type="material" style={{padding:0,margin:0}} />
+							<Icon name="add-box" size={24} type="material" style={{ padding: 0, margin: 0 }} />
 						</TouchableOpacity>
 						<Text style={styles.textHeader}>Danh sách đèn NB</Text>
 						<TouchableOpacity
 							style={{}}
 							onPress={() => navigation.navigate('Scanner')}>
-							<Icon name="camera-alt" size={24} type="material" style={{padding:0,margin:0}} />
+							<Icon name="camera-alt" size={24} type="material" style={{ padding: 0, margin: 0 }} />
 						</TouchableOpacity>
 					</View>
 					<View style={styles.listNB}>
 						<FlatList
 							data={data}
-							renderItem={({item}: {item: Item}) => {
+							renderItem={({ item }: { item: Item }) => {
 								return (
 									<ItemNB
-										onPress={() => navigation.navigate('Update', {item})}
+										onPress={() => navigation.navigate('Update', { item })}
 										item={item}
 									/>
 								);
@@ -97,8 +117,10 @@ export default function LightNB({navigation}: {navigation: any}) {
 					{
 						showAdd && (
 							<ModalAdd
-							onSubmit={handleSave}
-							onSave={FetchData}
+								isAdd = {added}
+								onSubmit={handleSave}
+								onSave={FetchData}
+								onCancle={handleCancle}
 							/>
 						)
 					}

@@ -5,13 +5,12 @@ import datatoObject from "../constants/arrayDatatoObjec";
 export default class Rall {
     Rall(){}
     async Create(data: any){
-
         try{
             const response = await axios.post(URL_POST_CREATE_LIGHTS, datatoObject(data));
             console.log(response.data);
         }
         catch(e: any){
-            console.log(e.message);
+            console.log(e.message+'API');
         }
 
     }
