@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet, Text, View, TouchableOpacity, Modal, TextInput, TouchableWithoutFeedback } from 'react-native'
+import { Dimensions, StyleSheet, Text, View, TouchableOpacity, Modal, TextInput, TouchableWithoutFeedback, KeyboardAvoidingView, Platform } from 'react-native'
 import React, { useCallback, useEffect, useState } from 'react'
 const Info = [
     {
@@ -81,7 +81,7 @@ interface PropsAdd {
     onSubmit?: () => void,
     onCancle?: () => void,
 }
-const ModalAdd: React.FC<PropsAdd> = ({onSave, onSubmit, onCancle }) => {
+const ModalAdd: React.FC<PropsAdd> = ({ onSave, onSubmit, onCancle }) => {
     const [Project, setProject] = useState(Info);
     const handleChange = (value: any, index: number) => {
         const newData = [...Project];
@@ -91,34 +91,40 @@ const ModalAdd: React.FC<PropsAdd> = ({onSave, onSubmit, onCancle }) => {
             onSave(newData);
         }
     };
-    useEffect(()=>{
-       setProject(Info.map((doc: any)=>({...doc,data:''})))
-    },[])
+    useEffect(() => {
+        setProject(Info.map((doc: any) => ({ ...doc, data: '' })))
+    }, [])
     return (
         <Modal visible transparent>
-            <View style={[styles.container]}>
-                <Text style={styles.titleHeader}>Thêm thông tin đèn NB</Text>
-                <View>
-                    {
-                        Info.map((doc: any, index: number) => (
-                            <Item
-                                key={index}
-                                title={doc.name}
-                                data={doc.data}
-                                onChange={(value) => handleChange(value, index)}
-                            />
-                        ))
-                    }
+            <KeyboardAvoidingView
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                style={{ flex: 1 }}
+            >
+
+                <View style={[styles.container]}>
+                    <Text style={styles.titleHeader}>Thêm thông tin đèn NB</Text>
+                    <View>
+                        {
+                            Info.map((doc: any, index: number) => (
+                                <Item
+                                    key={index}
+                                    title={doc.name}
+                                    data={doc.data}
+                                    onChange={(value) => handleChange(value, index)}
+                                />
+                            ))
+                        }
+                    </View>
+                    <View style={styles.btnView}>
+                        <TouchableOpacity style={styles.btnSave} onPress={onSubmit}>
+                            <Text style={styles.btnText}>Lưu</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.btnCancle} onPress={onCancle}>
+                            <Text style={styles.btnText}>Huỷ</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-                <View style={styles.btnView}>
-                    <TouchableOpacity style={styles.btnSave} onPress={onSubmit}>
-                        <Text style={styles.btnText}>Lưu</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.btnCancle} onPress={onCancle}>
-                        <Text style={styles.btnText}>Huỷ</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
+            </KeyboardAvoidingView>
         </Modal>
     )
 };
@@ -167,7 +173,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         width: 200,
         justifyContent: 'space-around',
-        marginBottom:10
+        marginBottom: 10
     },
     btnSave: {
         width: 50,
