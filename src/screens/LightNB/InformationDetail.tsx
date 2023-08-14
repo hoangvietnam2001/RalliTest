@@ -64,7 +64,7 @@ const InformationDetail: React.FC<Props> = ({navigation, route}) => {
 		},
 		{
 			name: 'MQTT',
-			data: item.MQTT ? item.MQTT : '',
+			data: item.SERVER_ADDRESS + ': ' + item.SERVER_MQTT_PORT,
 		},
 	];
 	const [showAlert, setShow] = useState(false);
