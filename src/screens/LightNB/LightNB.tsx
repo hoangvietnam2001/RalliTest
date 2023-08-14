@@ -10,6 +10,7 @@ import {
 	Dimensions,
 	Modal,
 	ToastAndroid,
+	RefreshControl,
 } from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
 import axios from 'axios';
@@ -34,14 +35,14 @@ interface Item {
 interface Props {
 	data: Item[] | null | undefined;
 }
-export default function LightNB({navigation}: {navigation: any}) {
+export default function LightNB({ navigation }: { navigation: any }) {
 	const [data, setData] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [showAdd, setShow] = useState(false);
-	const [dataAdd, setDataAdd] = useState([]);
+	const [dataAdd, setDataAdd]:any = useState([]);
 	// const [isFetching, setIsFetching] = useState(false); //load du lieu
 
-	const isFetchings = useSelector((state:any) => state.isFetching);
+	const isFetching = useSelector((state:any) => state.isFetching);
 	const dispatch = useDispatch();
 	// dispatch(setIsFetchings(true))
 	
@@ -53,7 +54,7 @@ export default function LightNB({navigation}: {navigation: any}) {
 	// call API to load data
 	useEffect(() => {
 		fetchData();
-	}, [isFetchings]);
+	}, [isFetching]);
 
 	// fetch data
 	const fetchData = async () => {
@@ -71,26 +72,31 @@ export default function LightNB({navigation}: {navigation: any}) {
 		setShow(true);
 	};
 	const handleSave = () => {
-		let kt = 0;
+		let kt = 100;
 		if (dataAdd.length === 0) {
-			kt = -1;
-		} else {
-			dataAdd.map((doc: any, index: number) => {
-				if (doc.data === '') {
-					console.log(index);
-					kt = 1;
-					return;
-				}
-			});
+			kt = -1
 		}
-		if (kt === -1) {
-			ToastAndroid.show('Chưa nhập thông tin', ToastAndroid.SHORT);
-		} else if (kt === 1) {
-		} else {
-			setShow(false);
-			API.Create(dataAdd);
-			setDataAdd([]);
-			dispatch(setIsFetching(true));
+		else {
+			for (let i = 0; i < dataAdd.length; i++) {
+				if (dataAdd[i].data === '') {
+					kt = i;
+					break;
+				}
+			};
+		}
+		if (kt <= 9) {
+			ToastAndroid.show('Chưa nhập đủ thông tin', ToastAndroid.SHORT);
+		}
+		else {
+			if (isNaN(dataAdd[2].data)) {
+				ToastAndroid.show('Port sai định dạng số', ToastAndroid.SHORT);
+			}
+			else {
+				setShow(false)
+				API.Create(dataAdd);
+				setDataAdd([])
+				setIsFetching(true);
+			}
 		}
 	};
 	const FetchData = (value: any) => {
@@ -99,9 +105,14 @@ export default function LightNB({navigation}: {navigation: any}) {
 
 	const handleCancle = () => {
 		setShow(false);
-		setDataAdd([]);
-	};
-
+		setDataAdd([])
+	}
+	const handleRefresh = () =>{
+		setIsFetching(true);
+		setTimeout(() => {
+			setIsFetching(false)
+		}, 1500);
+	}
 	return (
 		<>
 			{loading ? (
@@ -110,7 +121,7 @@ export default function LightNB({navigation}: {navigation: any}) {
 				<SafeAreaView
 					style={[
 						styles.container,
-						{backgroundColor: showAdd ? '#CCCCCC' : '#FFF'},
+						{ backgroundColor: showAdd ? '#CCCCCC' : '#FFF' },
 					]}>
 					{/* <LoadingNB /> */}
 					<View style={styles.header}>
@@ -119,7 +130,7 @@ export default function LightNB({navigation}: {navigation: any}) {
 								name="add-box"
 								size={24}
 								type="material"
-								style={{padding: 0, margin: 0}}
+								style={{ padding: 0, margin: 0 }}
 							/>
 						</TouchableOpacity>
 						<Text style={styles.textHeader}>Danh sách đèn NB</Text>
@@ -128,12 +139,13 @@ export default function LightNB({navigation}: {navigation: any}) {
 								name="camera-alt"
 								size={24}
 								type="material"
-								style={{padding: 0, margin: 0}}
+								style={{ padding: 0, margin: 0 }}
 							/>
 						</TouchableOpacity>
 					</View>
 					<View style={styles.listNB}>
 						<FlatList
+							refreshControl={<RefreshControl refreshing = {isFetching} onRefresh={handleRefresh}/>}
 							data={data}
 							renderItem={({item}: {item: Item}) => {
 								return (
