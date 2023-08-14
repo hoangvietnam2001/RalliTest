@@ -40,14 +40,14 @@ interface Props {
 }
 const InformationDetail: React.FC<Props> = ({navigation, route}) => {
 	const {item, handleSetFetching} = route.params;
-
+	
 	const Info = [
 		{
 			name: 'MAC',
 			data: item.MAC,
 		},
 		{
-			name: 'APPID',
+			name: 'APPID', 
 			data: item.APP_ID,
 		},
 		{
@@ -97,7 +97,12 @@ const InformationDetail: React.FC<Props> = ({navigation, route}) => {
 			<View style={styles.header}>
 				<TouchableOpacity
 					style={styles.headerBack}
-					onPress={() => navigation.goBack()}>
+					onPress={
+						() => {
+							navigation.goBack();
+						}
+						
+					}>
 					<Icon name="keyboard-backspace" type="material" size={36} />
 				</TouchableOpacity>
 				<View style={styles.headerTitleView}>
