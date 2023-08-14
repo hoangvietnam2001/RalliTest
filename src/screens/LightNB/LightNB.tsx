@@ -10,6 +10,7 @@ import {
 	Dimensions,
 	Modal,
 	ToastAndroid,
+	RefreshControl,
 } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
@@ -44,7 +45,7 @@ export default function LightNB({ navigation }: { navigation: any }) {
 		fetchData();
 		console.log('re-render');
 		setIsFetching(false)
-	}, [isFetching]);
+	}, [isFetching,]);
 
 	// fetch data
 	const fetchData = async () => {
@@ -102,7 +103,12 @@ export default function LightNB({ navigation }: { navigation: any }) {
 		setShow(false);
 		setDataAdd([])
 	}
-
+	const handleRefresh = () =>{
+		setIsFetching(true);
+		setTimeout(() => {
+			setIsFetching(false)
+		}, 1500);
+	}
 	return (
 		<>
 			{loading ? (
@@ -136,6 +142,7 @@ export default function LightNB({ navigation }: { navigation: any }) {
 					</View>
 					<View style={styles.listNB}>
 						<FlatList
+							refreshControl={<RefreshControl refreshing = {isFetching} onRefresh={handleRefresh}/>}
 							data={data}
 							renderItem={({ item }: { item: Item }) => {
 								return (
