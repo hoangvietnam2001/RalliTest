@@ -32,19 +32,20 @@ interface Item {
 interface Props {
 	data: Item[] | null | undefined;
 }
-export default function LightNB({navigation}: {navigation: any}) {
+export default function LightNB({ navigation }: { navigation: any }) {
 	const [data, setData] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [showAdd, setShow] = useState(false);
-	const [dataAdd, setDataAdd] = useState([]);
+	const [dataAdd, setDataAdd]: any = useState([]);
 	const [isFetching, setIsFetching] = useState(false); //load du lieu
 	// call API to load data
 
 	useEffect(() => {
 		fetchData();
 		console.log('re-render');
+		setIsFetching(false)
 	}, [isFetching]);
- 
+
 	// fetch data
 	const fetchData = async () => {
 		try {
@@ -61,30 +62,32 @@ export default function LightNB({navigation}: {navigation: any}) {
 		setShow(true);
 	};
 	const handleSave = () => {
-		let kt = 0;
-		if (dataAdd.length === 0){
+		let kt = 100;
+		if (dataAdd.length === 0) {
 			kt = -1
 		}
-		else{
-			dataAdd.map((doc: any, index: number) => {
-				if (doc.data === '') {
-					console.log(index)
-					kt = 1;
-					return;
+		else {
+			for (let i = 0; i < dataAdd.length; i++) {
+				if (dataAdd[i].data === '') {
+					kt = i;
+					break;
 				}
-			})
+			};
 		}
-		if (kt === -1){
-			ToastAndroid.show('Chưa nhập thông tin', ToastAndroid.SHORT);
-		}
-		else if (kt === 1){
-
+		if (kt <= 9) {
+			ToastAndroid.show('Chưa nhập đủ thông tin', ToastAndroid.SHORT);
 		}
 		else {
-			setShow(false)
-			API.Create(dataAdd);
-			setDataAdd([])
-			console.log('Ok');
+			if (isNaN(dataAdd[2].data)) {
+				ToastAndroid.show('Port sai định dạng số', ToastAndroid.SHORT);
+			}
+			else {
+				setShow(false)
+				API.Create(dataAdd);
+				setDataAdd([])
+				console.log('Ok');
+				setIsFetching(true);
+			}
 		}
 	}
 	const FetchData = (value: any) => {
@@ -108,7 +111,7 @@ export default function LightNB({navigation}: {navigation: any}) {
 				<SafeAreaView
 					style={[
 						styles.container,
-						{backgroundColor: showAdd ? '#CCCCCC' : '#FFF'},
+						{ backgroundColor: showAdd ? '#CCCCCC' : '#FFF' },
 					]}>
 					{/* <LoadingNB /> */}
 					<View style={styles.header}>
@@ -117,7 +120,7 @@ export default function LightNB({navigation}: {navigation: any}) {
 								name="add-box"
 								size={24}
 								type="material"
-								style={{padding: 0, margin: 0}}
+								style={{ padding: 0, margin: 0 }}
 							/>
 						</TouchableOpacity>
 						<Text style={styles.textHeader}>Danh sách đèn NB</Text>
@@ -127,7 +130,7 @@ export default function LightNB({navigation}: {navigation: any}) {
 								name="camera-alt"
 								size={24}
 								type="material"
-								style={{padding: 0, margin: 0}}
+								style={{ padding: 0, margin: 0 }}
 							/>
 						</TouchableOpacity>
 					</View>
@@ -137,7 +140,7 @@ export default function LightNB({navigation}: {navigation: any}) {
 							renderItem={({ item }: { item: Item }) => {
 								return (
 									<ItemNB
-										onPress={() => navigation.navigate('Update', {item,'handleSetFetching':handleSetIsFetching})}
+										onPress={() => navigation.navigate('Update', { item, 'handleSetFetching': handleSetIsFetching })}
 										item={item}
 									/>
 								);
