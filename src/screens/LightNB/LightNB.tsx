@@ -115,7 +115,7 @@ export default function LightNB({ navigation }: { navigation: any }) {
 					]}>
 					{/* <LoadingNB /> */}
 					<View style={styles.header}>
-						<TouchableOpacity style={{}} onPress={handleShowAdd}>
+						<TouchableOpacity onPress={handleShowAdd}>
 							<Icon
 								name="add-box"
 								size={24}
