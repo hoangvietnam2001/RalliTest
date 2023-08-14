@@ -43,7 +43,6 @@ export default function LightNB({ navigation }: { navigation: any }) {
 
 	useEffect(() => {
 		fetchData();
-		console.log('re-render');
 		setIsFetching(false)
 	}, [isFetching,]);
 
@@ -86,7 +85,6 @@ export default function LightNB({ navigation }: { navigation: any }) {
 				setShow(false)
 				API.Create(dataAdd);
 				setDataAdd([])
-				console.log('Ok');
 				setIsFetching(true);
 			}
 		}
