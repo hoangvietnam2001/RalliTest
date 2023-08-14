@@ -9,13 +9,14 @@ import {
 	Switch,
 	Dimensions,
 	Modal,
+	ToastAndroid,
 } from 'react-native';
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
 import LoadingNB from './LoadingNB';
 import ItemNB from '../../components/ItemNB';
-import {URL_GET_LIGHTS} from '../../utils/config';
-import {Icon} from 'react-native-elements';
+import { URL_GET_LIGHTS } from '../../utils/config';
+import { Icon } from 'react-native-elements';
 import ModalAdd from '../../components/layout/ModalAdd';
 import Rall from '../../services/API';
 
@@ -37,7 +38,6 @@ export default function LightNB({navigation}: {navigation: any}) {
 	const [showAdd, setShow] = useState(false);
 	const [dataAdd, setDataAdd] = useState([]);
 	const [isFetching, setIsFetching] = useState(false); //load du lieu
-
 	// call API to load data
 
 	useEffect(() => {
@@ -60,10 +60,33 @@ export default function LightNB({navigation}: {navigation: any}) {
 	const handleShowAdd = () => {
 		setShow(true);
 	};
-	const handleSave = async () => {
-		setShow(false);
-		API.Create(dataAdd);
-	};
+	const handleSave = () => {
+		let kt = 0;
+		if (dataAdd.length === 0){
+			kt = -1
+		}
+		else{
+			dataAdd.map((doc: any, index: number) => {
+				if (doc.data === '') {
+					console.log(index)
+					kt = 1;
+					return;
+				}
+			})
+		}
+		if (kt === -1){
+			ToastAndroid.show('Chưa nhập thông tin', ToastAndroid.SHORT);
+		}
+		else if (kt === 1){
+
+		}
+		else {
+			setShow(false)
+			API.Create(dataAdd);
+			setDataAdd([])
+			console.log('Ok');
+		}
+	}
 	const FetchData = (value: any) => {
 		setDataAdd(value);
 	};
@@ -72,6 +95,10 @@ export default function LightNB({navigation}: {navigation: any}) {
 	const handleSetIsFetching = () => {
 		setIsFetching(true);
 	};
+	const handleCancle = () => {
+		setShow(false);
+		setDataAdd([])
+	}
 
 	return (
 		<>
@@ -107,7 +134,7 @@ export default function LightNB({navigation}: {navigation: any}) {
 					<View style={styles.listNB}>
 						<FlatList
 							data={data}
-							renderItem={({item}: {item: Item}) => {
+							renderItem={({ item }: { item: Item }) => {
 								return (
 									<ItemNB
 										onPress={() => navigation.navigate('Update', {item,'handleSetFetching':handleSetIsFetching})}
@@ -118,7 +145,15 @@ export default function LightNB({navigation}: {navigation: any}) {
 							keyExtractor={item => item._id}
 						/>
 					</View>
-					{showAdd && <ModalAdd onSubmit={handleSave} onSave={FetchData} />}
+					{
+						showAdd && (
+							<ModalAdd
+								onSubmit={handleSave}
+								onSave={FetchData}
+								onCancle={handleCancle}
+							/>
+						)
+					}
 				</SafeAreaView>
 			)}
 		</>

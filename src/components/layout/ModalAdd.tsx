@@ -1,6 +1,5 @@
 import { Dimensions, StyleSheet, Text, View, TouchableOpacity, Modal, TextInput, TouchableWithoutFeedback } from 'react-native'
-import React, { useState } from 'react'
-import { Icon } from 'react-native-elements'
+import React, { useCallback, useEffect, useState } from 'react'
 const Info = [
     {
         name: 'Project',
@@ -46,7 +45,7 @@ const Info = [
 ];
 interface Props {
     title: string,
-    data: string,
+    data?: string,
     onChange: (value: any) => void
 }
 const Item: React.FC<Props> = ({ title, data, onChange }) => {
@@ -55,19 +54,19 @@ const Item: React.FC<Props> = ({ title, data, onChange }) => {
         setData(value)
         onChange(value)
     }
+
     return (
         <View style={styles.titleView}>
             <View>
                 <Text style={styles.title}>{title}</Text>
             </View>
-
             <View>
                 <TouchableWithoutFeedback >
                     <TextInput
                         value={ItemData}
                         placeholder={`${title}`}
-                        autoFocus
                         style={styles.input}
+                        autoFocus
                         onChangeText={(value) => handleDataChange(value)}
                     />
                 </TouchableWithoutFeedback>
@@ -75,21 +74,26 @@ const Item: React.FC<Props> = ({ title, data, onChange }) => {
         </View>
     );
 };
+
+
 interface PropsAdd {
     onSave?: (value: any[]) => void,
-    onSubmit?: ()=>void,
-    onCancle?: ()=>void, 
+    onSubmit?: () => void,
+    onCancle?: () => void,
 }
-const ModalAdd: React.FC<PropsAdd> = ({ onSave , onSubmit,onCancle}) => {
+const ModalAdd: React.FC<PropsAdd> = ({onSave, onSubmit, onCancle }) => {
     const [Project, setProject] = useState(Info);
     const handleChange = (value: any, index: number) => {
         const newData = [...Project];
-        newData[index] = value;
+        newData[index].data = value;
         setProject(newData);
         if (onSave) {
             onSave(newData);
         }
     };
+    useEffect(()=>{
+       setProject(Info.map((doc: any)=>({...doc,data:''})))
+    },[])
     return (
         <Modal visible transparent>
             <View style={[styles.container]}>
