@@ -17,12 +17,19 @@ const styles = StyleSheet.create({
 		width: 338,
 		height: 160,
 		borderRadius: 10,
-		borderWidth: 1,
-		borderColor: 'gray',
-		marginBottom:2
+		
+		marginBottom:2,
+		shadowColor:'#000',
+		shadowOffset:{
+			width:0,
+			height:4
+		},
+		shadowOpacity:0.32,
+		shadowRadius:10,
+		 elevation:4
 	},
 	text: {
-		marginVertical: 10,
+		marginVertical: 8,
 		fontSize: 18,
 		fontWeight: '400',
 		fontFamily: 'ABeeZee-Regular',
@@ -30,5 +37,6 @@ const styles = StyleSheet.create({
 		lineHeight: 21.28,
 		color: '#005A6F',
 		marginLeft: 32,
+		paddingTop:3
 	},
 });

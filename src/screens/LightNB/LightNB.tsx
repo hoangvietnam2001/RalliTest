@@ -44,7 +44,6 @@ export default function LightNB({ navigation }: { navigation: any }) {
 
 	const isFetching = useSelector((state:any) => state.isFetching);
 	const dispatch = useDispatch();
-	// dispatch(setIsFetchings(true))
 	
 	useEffect(() => {
 		// Bắt đầu fetching dữ liệu, set isFetching thành true
@@ -54,8 +53,9 @@ export default function LightNB({ navigation }: { navigation: any }) {
 	// call API to load data
 	useEffect(() => {
 		fetchData();
-	}, [isFetching]);
-
+		console.log(1);
+	}, [isFetching['isFetching']]);
+	
 	// fetch data
 	const fetchData = async () => {
 		try {
@@ -95,7 +95,7 @@ export default function LightNB({ navigation }: { navigation: any }) {
 				setShow(false)
 				API.Create(dataAdd);
 				setDataAdd([])
-				setIsFetching(true);
+				dispatch(setIsFetching(true))
 			}
 		}
 	};
@@ -108,9 +108,9 @@ export default function LightNB({ navigation }: { navigation: any }) {
 		setDataAdd([])
 	}
 	const handleRefresh = () =>{
-		setIsFetching(true);
+		dispatch(setIsFetching(true))
 		setTimeout(() => {
-			setIsFetching(false)
+			dispatch(setIsFetching(false))
 		}, 1500);
 	}
 	return (
@@ -145,7 +145,7 @@ export default function LightNB({ navigation }: { navigation: any }) {
 					</View>
 					<View style={styles.listNB}>
 						<FlatList
-							refreshControl={<RefreshControl refreshing = {isFetching} onRefresh={handleRefresh}/>}
+							 refreshControl={<RefreshControl refreshing = {isFetching['isFetching']} onRefresh={handleRefresh}/>}
 							data={data}
 							renderItem={({item}: {item: Item}) => {
 								return (

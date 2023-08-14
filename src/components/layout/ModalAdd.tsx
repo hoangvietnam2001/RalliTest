@@ -1,5 +1,16 @@
-import { Dimensions, StyleSheet, Text, View, TouchableOpacity, Modal, TextInput, TouchableWithoutFeedback } from 'react-native'
-import React, { useCallback, useEffect, useState } from 'react'
+import {
+	Dimensions,
+	StyleSheet,
+	Text,
+	View,
+	TouchableOpacity,
+	Modal,
+	TextInput,
+	TouchableWithoutFeedback,
+	KeyboardAvoidingView,
+	Platform,
+} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
 const Info = [
 	{
 		name: 'Project',
@@ -55,24 +66,22 @@ const Item: React.FC<Props> = ({title, data, onChange}) => {
 	};
 
 	return (
-			<View style={styles.titleView}>
-				<View>
-					<Text style={styles.title}>{title}</Text>
-				</View>
-				<View>
-                    
-					<TouchableWithoutFeedback>
-						<TextInput
-							value={ItemData}
-							placeholder={`${title}`}
-							style={styles.input}
-							// autoFocus
-							onChangeText={value => handleDataChange(value)}
-						/>
-					</TouchableWithoutFeedback>
-                   
-				</View>
+		<View style={styles.titleView}>
+			<View>
+				<Text style={styles.title}>{title}</Text>
 			</View>
+			<View>
+				<TouchableWithoutFeedback>
+					<TextInput
+						value={ItemData}
+						placeholder={`${title}`}
+						style={styles.input}
+						// autoFocus
+						onChangeText={value => handleDataChange(value)}
+					/>
+				</TouchableWithoutFeedback>
+			</View>
+		</View>
 	);
 };
 
@@ -81,115 +90,116 @@ interface PropsAdd {
 	onSubmit?: () => void;
 	onCancle?: () => void;
 }
-const ModalAdd: React.FC<PropsAdd> = ({onSave, onSubmit, onCancle }) => {
-    const [Project, setProject] = useState(Info);
-    const handleChange = (value: any, index: number) => {
-        const newData = [...Project];
-        newData[index].data = value;
-        setProject(newData);
-        if (onSave) {
-            onSave(newData);
-        }
-    };
-    useEffect(()=>{
-       setProject(Info.map((doc: any)=>({...doc,data:''})))
-    },[])
-    return (
-        <Modal visible transparent>
-            <View style={[styles.container]}>
-                <Text style={styles.titleHeader}>Thêm thông tin đèn NB</Text>
-                <View>
-                    {
-                        Info.map((doc: any, index: number) => (
-                            <Item
-                                key={index}
-                                title={doc.name}
-                                data={doc.data}
-                                onChange={(value) => handleChange(value, index)}
-                            />
-                        ))
-                    }
-                </View>
-                <View style={styles.btnView}>
-                    <TouchableOpacity style={styles.btnSave} onPress={onSubmit}>
-                        <Text style={styles.btnText}>Lưu</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.btnCancle} onPress={onCancle}>
-                        <Text style={styles.btnText}>Huỷ</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-        </Modal>
-    )
+const ModalAdd: React.FC<PropsAdd> = ({onSave, onSubmit, onCancle}) => {
+	const [Project, setProject] = useState(Info);
+	const handleChange = (value: any, index: number) => {
+		const newData = [...Project];
+		newData[index].data = value;
+		setProject(newData);
+		if (onSave) {
+			onSave(newData);
+		}
+	};
+	useEffect(() => {
+		setProject(Info.map((doc: any) => ({...doc, data: ''})));
+	}, []);
+	return (
+		<Modal visible transparent>
+			<KeyboardAvoidingView
+				behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+				<View style={[styles.container]}>
+					<Text style={styles.titleHeader}>Thêm thông tin đèn NB</Text>
+					<View>
+						{Info.map((doc: any, index: number) => (
+							<Item
+								key={index}
+								title={doc.name}
+								data={doc.data}
+								onChange={value => handleChange(value, index)}
+							/>
+						))}
+					</View>
+					<View style={styles.btnView}>
+						<TouchableOpacity style={styles.btnSave} onPress={onSubmit}>
+							<Text style={styles.btnText}>Lưu</Text>
+						</TouchableOpacity>
+						<TouchableOpacity style={styles.btnCancle} onPress={onCancle}>
+							<Text style={styles.btnText}>Huỷ</Text>
+						</TouchableOpacity>
+					</View>
+				</View>
+			</KeyboardAvoidingView>
+		</Modal>
+	);
 };
 const WIDTH = Dimensions.get('screen').width;
 const HEIGHT = Dimensions.get('screen').height;
 const styles = StyleSheet.create({
-    container: {
-        marginHorizontal: 15,
-        width: WIDTH / 1.1,
-        position: 'absolute',
-        top: 100,
-        borderRadius: 15,
-        backgroundColor: 'white',
-        alignItems: "center"
-    },
-    titleHeader: {
-        color: '#005A6F',
-        fontSize: 15,
-        lineHeight: 40,
-    },
-    titleView: {
-        width: WIDTH / 1.2,
-        borderBottomWidth: 0.6,
-        borderColor: '#CCCCCC',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
-    title: {
-        color: '#005A6F',
-        fontSize: 15,
-        lineHeight: 30,
-        fontFamily: 'ABeeZee-Italic',
-    },
-    input: {
-        padding: 0,
-        textAlign: 'right'
-    },
-    data: {
-        fontSize: 15,
-        color: '#434343CC',
-        flex: 1,
-        fontFamily: 'ABeeZee-Italic',
-        lineHeight: 30,
-    },
-    btnView: {
-        flexDirection: 'row',
-        width: 200,
-        justifyContent: 'space-around',
-        marginBottom:10
-    },
-    btnSave: {
-        width: 50,
-        height: 25,
-        backgroundColor: '#005A6F',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 5,
-        borderRadius: 5,
-    },
-    btnText: {
-        color: 'white',
-        fontSize: 13,
-    },
-    btnCancle: {
-        width: 50,
-        height: 25,
-        backgroundColor: 'red',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 5,
-        borderRadius: 5,
-    }
-})
+	container: {
+		marginHorizontal: 15,
+		width: WIDTH / 1.1,
+		position: 'absolute',
+		top: 100,
+		borderRadius: 15,
+		backgroundColor: 'white',
+		alignItems: 'center',
+	},
+	titleHeader: {
+		color: '#005A6F',
+		fontSize: 15,
+		lineHeight: 40,
+	},
+	titleView: {
+		width: WIDTH / 1.2,
+		borderBottomWidth: 0.6,
+		borderColor: '#CCCCCC',
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+	},
+	title: {
+		color: '#005A6F',
+		fontSize: 15,
+		lineHeight: 30,
+		fontFamily: 'ABeeZee-Italic',
+	},
+	input: {
+		padding: 0,
+		textAlign: 'right',
+	},
+	data: {
+		fontSize: 15,
+		color: '#434343CC',
+		flex: 1,
+		fontFamily: 'ABeeZee-Italic',
+		lineHeight: 30,
+	},
+	btnView: {
+		flexDirection: 'row',
+		width: 200,
+		justifyContent: 'space-around',
+		marginBottom: 10,
+	},
+	btnSave: {
+		width: 50,
+		height: 25,
+		backgroundColor: '#005A6F',
+		justifyContent: 'center',
+		alignItems: 'center',
+		marginTop: 5,
+		borderRadius: 5,
+	},
+	btnText: {
+		color: 'white',
+		fontSize: 13,
+	},
+	btnCancle: {
+		width: 50,
+		height: 25,
+		backgroundColor: 'red',
+		justifyContent: 'center',
+		alignItems: 'center',
+		marginTop: 5,
+		borderRadius: 5,
+	},
+});
 export default ModalAdd;
