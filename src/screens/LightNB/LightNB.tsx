@@ -11,15 +11,17 @@ import {
 	Modal,
 	ToastAndroid,
 } from 'react-native';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import axios from 'axios';
 import LoadingNB from './LoadingNB';
 import ItemNB from '../../components/ItemNB';
-import { URL_GET_LIGHTS } from '../../utils/config';
-import { Icon } from 'react-native-elements';
+import {URL_GET_LIGHTS} from '../../utils/config';
+import {Icon} from 'react-native-elements';
 import ModalAdd from '../../components/layout/ModalAdd';
 import Rall from '../../services/API';
 
+import {useSelector, useDispatch} from 'react-redux';
+import {setIsFetching} from '../../redux/fetchingSlice';
 const API = new Rall();
 
 const WIDTH = Dimensions.get('window').width;
@@ -37,21 +39,29 @@ export default function LightNB({navigation}: {navigation: any}) {
 	const [loading, setLoading] = useState(true);
 	const [showAdd, setShow] = useState(false);
 	const [dataAdd, setDataAdd] = useState([]);
-	const [isFetching, setIsFetching] = useState(false); //load du lieu
-	// call API to load data
+	// const [isFetching, setIsFetching] = useState(false); //load du lieu
 
+	const isFetchings = useSelector((state:any) => state.isFetching);
+	const dispatch = useDispatch();
+	// dispatch(setIsFetchings(true))
+	
+	useEffect(() => {
+		// Bắt đầu fetching dữ liệu, set isFetching thành true
+		dispatch(setIsFetching(false));
+	  }, []);
+
+	// call API to load data
 	useEffect(() => {
 		fetchData();
-		console.log('re-render');
-	}, [isFetching]);
- 
+	}, [isFetchings]);
+
 	// fetch data
 	const fetchData = async () => {
 		try {
 			const response = await axios.get(URL_GET_LIGHTS);
 			setLoading(false);
 			setData(response.data);
-			setIsFetching(false);
+			dispatch(setIsFetching(false));
 		} catch (error) {
 			console.error('Error fetching data:', error);
 		}
@@ -62,43 +72,35 @@ export default function LightNB({navigation}: {navigation: any}) {
 	};
 	const handleSave = () => {
 		let kt = 0;
-		if (dataAdd.length === 0){
-			kt = -1
-		}
-		else{
+		if (dataAdd.length === 0) {
+			kt = -1;
+		} else {
 			dataAdd.map((doc: any, index: number) => {
 				if (doc.data === '') {
-					console.log(index)
+					console.log(index);
 					kt = 1;
 					return;
 				}
-			})
+			});
 		}
-		if (kt === -1){
+		if (kt === -1) {
 			ToastAndroid.show('Chưa nhập thông tin', ToastAndroid.SHORT);
-		}
-		else if (kt === 1){
-
-		}
-		else {
-			setShow(false)
+		} else if (kt === 1) {
+		} else {
+			setShow(false);
 			API.Create(dataAdd);
-			setDataAdd([])
-			console.log('Ok');
+			setDataAdd([]);
+			dispatch(setIsFetching(true));
 		}
-	}
+	};
 	const FetchData = (value: any) => {
 		setDataAdd(value);
 	};
 
-	// set isFetching
-	const handleSetIsFetching = () => {
-		setIsFetching(true);
-	};
 	const handleCancle = () => {
 		setShow(false);
-		setDataAdd([])
-	}
+		setDataAdd([]);
+	};
 
 	return (
 		<>
@@ -121,8 +123,7 @@ export default function LightNB({navigation}: {navigation: any}) {
 							/>
 						</TouchableOpacity>
 						<Text style={styles.textHeader}>Danh sách đèn NB</Text>
-						<TouchableOpacity
-							onPress={() => navigation.navigate('Scanner')}>
+						<TouchableOpacity onPress={() => navigation.navigate('Scanner')}>
 							<Icon
 								name="camera-alt"
 								size={24}
@@ -134,10 +135,14 @@ export default function LightNB({navigation}: {navigation: any}) {
 					<View style={styles.listNB}>
 						<FlatList
 							data={data}
-							renderItem={({ item }: { item: Item }) => {
+							renderItem={({item}: {item: Item}) => {
 								return (
 									<ItemNB
-										onPress={() => navigation.navigate('Update', {item,'handleSetFetching':handleSetIsFetching})}
+										onPress={() =>
+											navigation.navigate('Update', {
+												item
+											})
+										}
 										item={item}
 									/>
 								);
@@ -145,15 +150,13 @@ export default function LightNB({navigation}: {navigation: any}) {
 							keyExtractor={item => item._id}
 						/>
 					</View>
-					{
-						showAdd && (
-							<ModalAdd
-								onSubmit={handleSave}
-								onSave={FetchData}
-								onCancle={handleCancle}
-							/>
-						)
-					}
+					{showAdd && (
+						<ModalAdd
+							onSubmit={handleSave}
+							onSave={FetchData}
+							onCancle={handleCancle}
+						/>
+					)}
 				</SafeAreaView>
 			)}
 		</>

@@ -16,9 +16,9 @@ import ModalAdd from '../../components/layout/ModalAdd';
 import truncateText from '../../constants/truncateText';
 import Rall from '../../services/API';
 
-LogBox.ignoreLogs([
-  'Non-serializable values were found in the navigation state',
-]);
+import {useSelector, useDispatch} from 'react-redux';
+import {setIsFetching} from '../../redux/fetchingSlice';
+
 const API = new Rall();
 const Item = ({title, data}: {title: string; data: string}) => {
 	const text = truncateText(data);
@@ -39,7 +39,10 @@ interface Props {
 	route?: any;
 }
 const InformationDetail: React.FC<Props> = ({navigation, route}) => {
-	const {item, handleSetFetching} = route.params;
+	const {item} = route.params;
+	
+	const isFetchings = useSelector((state:any) => state.isFetching);
+	const dispatch = useDispatch();
 	
 	const Info = [
 		{
@@ -78,7 +81,7 @@ const InformationDetail: React.FC<Props> = ({navigation, route}) => {
 	const handleSumit = async () => {
 		if (item.STATUS === false) {
 			API.Delete(item._id);
-			handleSetFetching();
+			dispatch(setIsFetching(true));
 			navigation.goBack();
 		} else {
 			ToastAndroid.show('Đang hoạt động', ToastAndroid.SHORT);
