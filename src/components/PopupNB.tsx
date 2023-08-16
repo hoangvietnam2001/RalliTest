@@ -5,7 +5,7 @@ export default function PopupNB({item, onPress}: {item: any, onPress:()=>void}) 
 	
 	return (
 		<TouchableOpacity style={styles.popup} onPress={onPress}>
-			<Text style={styles.text}>Dự án: {item.project}</Text>
+			<Text style={[styles.text, {marginTop: 15}]}>Dự án: {item.project}</Text>
 			<Text style={styles.text}>Địa chỉ server: {item.SERVER_ADDRESS}</Text>
 			<Text style={styles.text}>MAC: {item.MAC}</Text>
 		</TouchableOpacity>
@@ -15,21 +15,20 @@ export default function PopupNB({item, onPress}: {item: any, onPress:()=>void}) 
 const styles = StyleSheet.create({
 	popup: {
 		width: 338,
-		height: 160,
-		borderRadius: 10,
+		borderRadius: 2,
 		
 		marginBottom:2,
 		shadowColor:'#000',
 		shadowOffset:{
 			width:0,
-			height:4
+			height:1
 		},
-		shadowOpacity:0.32,
-		shadowRadius:10,
-		 elevation:4
+		shadowOpacity:0.5,
+		shadowRadius:1,
+		 elevation: 5
 	},
 	text: {
-		marginVertical: 8,
+		marginVertical: 10,
 		fontSize: 18,
 		fontWeight: '400',
 		fontFamily: 'ABeeZee-Regular',

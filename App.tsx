@@ -5,6 +5,7 @@ import {NavigationContainer} from '@react-navigation/native';
 
 import {Provider} from 'react-redux';
 import store from './src/redux/store';
+import Demo from './src/screens/Demo';
 
 export default function App() {
 	return (
@@ -13,6 +14,7 @@ export default function App() {
 				<ScannerStack />
 			</NavigationContainer>
 		</Provider>
+		// <Demo/>
 	);
 }
 

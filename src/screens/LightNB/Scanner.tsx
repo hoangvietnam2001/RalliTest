@@ -1,38 +1,33 @@
-import {Dimensions, StyleSheet, Text, View} from 'react-native';
-import React, {useState, useEffect} from 'react';
-import {RNCamera} from 'react-native-camera';
-import QRCodeScanner from 'react-native-qrcode-svg';
-const Scanner = () => {
-	const [scannedData, setScannedData] = useState(null);
-	const handleCodeScanned = ({data}: {data: any}) => {
-		if (data) {
-			setScannedData(data);
-		}
-	};
+import { Alert, Dimensions, StyleSheet, Text, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import QRCodeScanner from 'react-native-qrcode-scanner';
+import { RNCamera } from 'react-native-camera';
+import { useDispatch } from 'react-redux';
+import { SetCODE, setSTATUS } from '../../redux/fetchingSlice';
 
+
+const Scanner = ({ navigation, route }: { navigation: any, route: any }) => {
+	const { from } = route.params;
+	const dispatch = useDispatch();
+	const handleData = (value: any) => {
+		dispatch(setSTATUS({ from: from, value: value }))
+		navigation.goBack();
+	}
+	useEffect(() => {
+		console.log(from);
+	}, [])
 	return (
 		<View style={styles.constainer}>
 			<Text style={styles.title}>Lọc đèn NB theo mã QR</Text>
-
-      <View style={styles.scanner}>
-        <RNCamera
-				style={styles.camera}
-				type={RNCamera.Constants.Type.back}
-				onBarCodeRead={handleCodeScanned}
-        
-			/>
-			{scannedData && (
-				<View style={styles.qrContainer}>
+				<View style={styles.scanner}>
 					<QRCodeScanner
-						value={scannedData}
-						size={200}
-						color="black"
-						backgroundColor="white"
+						onRead={({ data }) => handleData(data)}
+						flashMode={RNCamera.Constants.FlashMode.torch}
+						reactivate={false}
+						reactivateTimeout={1500}
+						// cameraStyle={styles.camera}
 					/>
 				</View>
-			)} 
-      </View>
-			
 		</View>
 	);
 };
@@ -46,7 +41,7 @@ const styles = StyleSheet.create({
 		height: HEGHT,
 		flex: 1,
 		alignItems: 'center',
-    // justifyContent:'center'
+		// justifyContent:'center'
 	},
 	title: {
 		marginTop: HEGHT / 12.5,
@@ -55,16 +50,18 @@ const styles = StyleSheet.create({
 		color: '#005A6F',
 	},
 	scanner: {
-		marginTop: HEGHT / 5,
-		width: WIDTH / 1.33,
-		height: WIDTH / 1.33,
-		borderRadius: 20,
+		flex: 1,
+		borderRadius: 10,
+		overflow: 'hidden',
+		width: 300,
+		height: 200,
+		backgroundColor: 'red',
 	},
 	camera: {
-		width:minSize-100,
-		height: minSize-100,
-    justifyContent: 'center',
-    alignItems: 'center',
+		flex: 1,
+		width: 200,
+		height: 300,
+		borderRadius: 20,
 	},
 	qrContainer: {
 		position: 'absolute',
