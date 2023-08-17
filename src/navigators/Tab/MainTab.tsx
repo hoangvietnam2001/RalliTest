@@ -17,6 +17,7 @@ const MainTab = () => {
 						fontFamily: 'ABeeZee-Regular',
 						marginBottom: 8,
 					},
+				tabBarHideOnKeyboard: true
 				}}>
 				<BottomTab.Screen
 					name={'LightNB'}

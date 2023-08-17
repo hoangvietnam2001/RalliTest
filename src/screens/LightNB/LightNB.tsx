@@ -11,18 +11,20 @@ import {
 	Modal,
 	ToastAndroid,
 	RefreshControl,
+	Alert,
 } from 'react-native';
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {  useEffect, useState } from 'react';
 import axios from 'axios';
 import LoadingNB from './LoadingNB';
 import ItemNB from '../../components/ItemNB';
-import {URL_GET_LIGHTS} from '../../utils/config';
-import {Icon} from 'react-native-elements';
+import { URL_GET_LIGHTS } from '../../utils/config';
+import { Icon } from 'react-native-elements';
 import ModalAdd from '../../components/layout/ModalAdd';
 import Rall from '../../services/API';
 
-import {useSelector, useDispatch} from 'react-redux';
-import {setIsFetching} from '../../redux/fetchingSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { SetCODE, setIsFetching, setSTATUS, setSelectItem } from '../../redux/fetchingSlice';
+import { useIsFocused } from '@react-navigation/native';
 const API = new Rall();
 
 const WIDTH = Dimensions.get('window').width;
@@ -39,23 +41,27 @@ export default function LightNB({ navigation }: { navigation: any }) {
 	const [data, setData] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [showAdd, setShow] = useState(false);
-	const [dataAdd, setDataAdd]:any = useState([]);
+	const [dataAdd, setDataAdd]: any = useState([]);
 	// const [isFetching, setIsFetching] = useState(false); //load du lieu
-
-	const isFetching = useSelector((state:any) => state.isFetching);
+	const CODE = useSelector((state: any)=>state.CODE)
+	const isFetching = useSelector((state: any) => state.isFetching);
 	const dispatch = useDispatch();
-	
 	useEffect(() => {
+		if(CODE.STATUS.from === 1 ){
+			setShow(true);
+		}
 		// Bắt đầu fetching dữ liệu, set isFetching thành true
 		dispatch(setIsFetching(false));
-	  }, []);
+		if(CODE.STATUS.from === 0){
+			setData(data.filter((item: any)=>item.MAC === CODE.STATUS.value))
+			dispatch(setSTATUS({from: '', value:''}))
+		}
+	}, [CODE.STATUS.from]);
 
-	// call API to load data
 	useEffect(() => {
 		fetchData();
-		console.log(1);
 	}, [isFetching['isFetching']]);
-	
+
 	// fetch data
 	const fetchData = async () => {
 		try {
@@ -88,7 +94,7 @@ export default function LightNB({ navigation }: { navigation: any }) {
 			ToastAndroid.show('Chưa nhập đủ thông tin', ToastAndroid.SHORT);
 		}
 		else {
-			if (isNaN(dataAdd[2].data)) {
+			if (isNaN(dataAdd[3].data)) {
 				ToastAndroid.show('Port sai định dạng số', ToastAndroid.SHORT);
 			}
 			else {
@@ -96,6 +102,8 @@ export default function LightNB({ navigation }: { navigation: any }) {
 				API.Create(dataAdd);
 				setDataAdd([])
 				dispatch(setIsFetching(true))
+				dispatch(setSelectItem(''))
+				dispatch(setSTATUS({from: '', value:''}))
 			}
 		}
 	};
@@ -106,8 +114,10 @@ export default function LightNB({ navigation }: { navigation: any }) {
 	const handleCancle = () => {
 		setShow(false);
 		setDataAdd([])
+		dispatch(setSTATUS({from: '', value:''}))
+		dispatch(setSelectItem(''))
 	}
-	const handleRefresh = () =>{
+	const handleRefresh = () => {
 		dispatch(setIsFetching(true))
 		setTimeout(() => {
 			dispatch(setIsFetching(false))
@@ -134,7 +144,7 @@ export default function LightNB({ navigation }: { navigation: any }) {
 							/>
 						</TouchableOpacity>
 						<Text style={styles.textHeader}>Danh sách đèn NB</Text>
-						<TouchableOpacity onPress={() => navigation.navigate('Scanner')}>
+						<TouchableOpacity onPress={() => navigation.navigate('Scanner', {from : 0})}>
 							<Icon
 								name="camera-alt"
 								size={24}
@@ -145,9 +155,10 @@ export default function LightNB({ navigation }: { navigation: any }) {
 					</View>
 					<View style={styles.listNB}>
 						<FlatList
-							 refreshControl={<RefreshControl refreshing = {isFetching['isFetching']} onRefresh={handleRefresh}/>}
+							showsVerticalScrollIndicator = {false}
+							refreshControl={<RefreshControl refreshing={isFetching['isFetching']} onRefresh={handleRefresh} />}
 							data={data}
-							renderItem={({item}: {item: Item}) => {
+							renderItem={({ item }: { item: Item }) => {
 								return (
 									<ItemNB
 										onPress={() =>
@@ -162,13 +173,17 @@ export default function LightNB({ navigation }: { navigation: any }) {
 							keyExtractor={item => item._id}
 						/>
 					</View>
-					{showAdd && (
+					<Modal 
+						visible = {showAdd} 
+						transparent
+					>
 						<ModalAdd
 							onSubmit={handleSave}
 							onSave={FetchData}
 							onCancle={handleCancle}
+							navigation={navigation}
 						/>
-					)}
+					</Modal>
 				</SafeAreaView>
 			)}
 		</>
@@ -177,17 +192,18 @@ export default function LightNB({ navigation }: { navigation: any }) {
 
 const styles = StyleSheet.create({
 	container: {
+		width: '100%',
+		height: '100%',
 		flex: 1,
 		backgroundColor: '#fff',
 	},
 	header: {
 		flexDirection: 'row',
 		width: 343,
-		height: 48,
+		height: 50,
 		alignItems: 'center',
 		justifyContent: 'space-between',
 		marginHorizontal: 35,
-		marginTop: 16,
 		alignSelf: 'center',
 	},
 	textHeader: {
@@ -202,6 +218,6 @@ const styles = StyleSheet.create({
 		width: WIDTH - 16,
 		alignSelf: 'center',
 		marginBottom: 82,
-		height: HEIGHT - 82 - 88,
+		height: HEIGHT - 82 - 66,
 	},
 });
