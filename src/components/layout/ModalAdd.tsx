@@ -213,6 +213,7 @@ const ModalAdd: React.FC<PropsAdd> = (props: PropsAdd) => {
 		}
 	}, [selectedItem]);
 	return (
+
 		<View style={[styles.container]}>
 			<View style={styles.headerView}>
 
@@ -265,6 +266,7 @@ const ModalAdd: React.FC<PropsAdd> = (props: PropsAdd) => {
 				</TouchableOpacity>
 			</View>
 		</View>
+
 	);
 };
 const WIDTH = Dimensions.get('screen').width;
@@ -278,8 +280,11 @@ const styles = StyleSheet.create({
 		top: 80,
 		backgroundColor: 'white',
 		alignItems: 'center',
-		alignSelf:'center'
-
+		alignSelf:'center',
+		position:'absolute',
+		// marginTop:80,
+		marginBottom:10,
+		marginVertical:15
 	},
 	headerView: {
 		width: WIDTH / 1.1,

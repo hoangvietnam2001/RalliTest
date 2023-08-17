@@ -1,33 +1,33 @@
-import { Alert, Dimensions, StyleSheet, Text, View } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import {Alert, Dimensions, StyleSheet, Text, View} from 'react-native';
+import React, {useState, useEffect} from 'react';
 import QRCodeScanner from 'react-native-qrcode-scanner';
-import { RNCamera } from 'react-native-camera';
-import { useDispatch } from 'react-redux';
-import { SetCODE, setSTATUS } from '../../redux/fetchingSlice';
+import {RNCamera} from 'react-native-camera';
+import {useDispatch} from 'react-redux';
+import {SetCODE, setSTATUS} from '../../redux/fetchingSlice';
 
-
-const Scanner = ({ navigation, route }: { navigation: any, route: any }) => {
-	const { from } = route.params;
+const Scanner = ({navigation, route}: {navigation: any; route: any}) => {
+	const {from} = route.params;
 	const dispatch = useDispatch();
 	const handleData = (value: any) => {
-		dispatch(setSTATUS({ from: from, value: value }))
+		dispatch(setSTATUS({from: from, value: value}));
 		navigation.goBack();
-	}
+	};
 	useEffect(() => {
 		console.log(from);
-	}, [])
+	}, []);
 	return (
 		<View style={styles.constainer}>
 			<Text style={styles.title}>Lọc đèn NB theo mã QR</Text>
-				<View style={styles.scanner}>
-					<QRCodeScanner
-						onRead={({ data }) => handleData(data)}
-						flashMode={RNCamera.Constants.FlashMode.torch}
-						reactivate={false}
-						reactivateTimeout={1500}
-						// cameraStyle={styles.camera}
-					/>
-				</View>
+			<View style={styles.scanner}>
+				<QRCodeScanner
+					onRead={({data}) => handleData(data)}
+					flashMode={RNCamera.Constants.FlashMode.off}
+					reactivate={true}
+					reactivateTimeout={1500}
+					cameraStyle={styles.camera}
+					//  cameraContainerStyle={styles.camera}
+				/>
+			</View>
 		</View>
 	);
 };
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
 		height: HEGHT,
 		flex: 1,
 		alignItems: 'center',
-		// justifyContent:'center'
+		justifyContent: 'center',
 	},
 	title: {
 		marginTop: HEGHT / 12.5,
@@ -54,14 +54,18 @@ const styles = StyleSheet.create({
 		borderRadius: 10,
 		overflow: 'hidden',
 		width: 300,
-		height: 200,
-		backgroundColor: 'red',
+		height: 300,
+		// backgroundColor: 'red',
+		justifyContent: 'center',
+		alignItems: 'center',
 	},
 	camera: {
 		flex: 1,
-		width: 200,
-		height: 300,
-		borderRadius: 20,
+		width: 300,
+		height: 200,
+		alignSelf: 'center',
+		justifyContent: 'center',
+		alignItems: 'center',
 	},
 	qrContainer: {
 		position: 'absolute',

@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
 		},
 		shadowOpacity:0.5,
 		shadowRadius:1,
-		 elevation: 5
+		 elevation: 3
 	},
 	text: {
 		marginVertical: 10,
