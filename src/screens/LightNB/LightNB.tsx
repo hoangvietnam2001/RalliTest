@@ -220,6 +220,6 @@ const styles = StyleSheet.create({
 		width: WIDTH - 16,
 		alignSelf: 'center',
 		marginBottom: 82,
-		height: HEIGHT - 82 - 66,
+		height: HEIGHT - 82 - 50,
 	},
 });

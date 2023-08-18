@@ -42,7 +42,7 @@ const Scanner = ({ navigation, route }: { navigation: any, route: any }) => {
 	}
 	const handleCancle = () => {
 		navigation.goBack();
-	}
+	};
 	useEffect(() => {
 	}, [])
 	return (
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
 		height: HEGHT,
 		flex: 1,
 		alignItems: 'center',
-		// justifyContent:'center'
+		justifyContent: 'center',
 	},
 	title: {
 		marginTop: HEGHT / 12.5,
