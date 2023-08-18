@@ -140,7 +140,7 @@ export default function LightNB({ navigation }: { navigation: any }) {
 						<TouchableOpacity onPress={handleshowModal}>
 							<Icon
 								name="add-box"
-								size={24}
+								size={30}
 								type="material"
 								style={{ padding: 0, margin: 0 }}
 							/>
@@ -149,7 +149,7 @@ export default function LightNB({ navigation }: { navigation: any }) {
 						<TouchableOpacity onPress={() => navigation.navigate('Scanner', {from : 0})}>
 							<Icon
 								name="camera-alt"
-								size={24}
+								size={30}
 								type="material"
 								style={{ padding: 0, margin: 0 }}
 							/>
@@ -220,6 +220,6 @@ const styles = StyleSheet.create({
 		width: WIDTH - 16,
 		alignSelf: 'center',
 		marginBottom: 82,
-		height: HEIGHT - 82 - 50,
+		height: HEIGHT - 82 - 50-24,
 	},
 });

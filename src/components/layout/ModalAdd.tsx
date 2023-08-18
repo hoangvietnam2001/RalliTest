@@ -112,9 +112,11 @@ const Item: React.FC<Props> = (props: Props) => {
 	useEffect(() => {
 		if (props.index === 10 && CODE.value) {
 			setData(CODE.value);
+			props.onChange(CODE.value);
 		}
 		if (props.index ===1 && CODE.clientId){
 			setData (CODE.clientId);
+			props.onChange(CODE.clientId);
 		}
 	}, [])
 	return (

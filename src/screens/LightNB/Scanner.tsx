@@ -51,9 +51,9 @@ const Scanner = ({ navigation, route }: { navigation: any, route: any }) => {
 			<View style={styles.scanner}>
 				<QRCodeScanner
 					onRead={({ data }) => handleData(data)}
-					flashMode={RNCamera.Constants.FlashMode.torch}
+					flashMode={RNCamera.Constants.FlashMode.off}
 					reactivate={true}
-					reactivateTimeout={2000}
+					reactivateTimeout={1200}
 					cameraStyle={styles.camera}
 				/>
 			</View>
