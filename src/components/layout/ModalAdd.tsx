@@ -91,26 +91,30 @@ interface Props {
 }
 const Item: React.FC<Props> = (props: Props) => {
 	const [ItemData, setData] = useState('');
-	const [ClientId, setClientId] = useState('');
+	// const [ClientId, setClientId] = useState('');
 	const selectedItem = useSelector((state: any) => state.selectedItem.selectedItem);
-	const CODE = useSelector((state: any) => state.CODE.STATUS.value);
+	const CODE = useSelector((state: any) => state.CODE.STATUS);
 	const handleDataChange = (value: any) => {
 		setData(value);
 		props.onChange(value);
 	};
 	const handleClientChange = async () => {
 		const response: any = await API.GetClient();
-		if (CODE){
-			setClientId(response);
+		setData(response);
+		// if (CODE.value){
+		// 	// setClientId(response);
 			props.onChange(response);
-		}
-		else{
-			ToastAndroid.show('Quét MAC trước', ToastAndroid.SHORT);
-		}
+		// }
+		// else{
+		// 	ToastAndroid.show('Quét MAC trước', ToastAndroid.SHORT);
+		// }
 	}
 	useEffect(() => {
-		if (props.index === 10 && CODE) {
-			setData(CODE)
+		if (props.index === 10 && CODE.value) {
+			setData(CODE.value);
+		}
+		if (props.index ===1 && CODE.clientId){
+			setData (CODE.clientId);
 		}
 	}, [])
 	return (
@@ -135,8 +139,8 @@ const Item: React.FC<Props> = (props: Props) => {
 					{
 						props.index !== 11 ?
 							<TextInput
-								editable={(props.index === 1 || props.index === 10) ? false : true}
-								value={props.index === 1 ? ClientId : ItemData}
+								// editable={(props.index === 1) ? false : true}
+								value={ItemData}
 								placeholder={`${props.title}`}
 								style={styles.input}
 								onChangeText={value => handleDataChange(value)}
@@ -190,6 +194,9 @@ const ModalAdd: React.FC<PropsAdd> = (props: PropsAdd) => {
 	const handleNavigation = () => {
 		props.onCancle?.()
 		navigation.navigate('Scanner', { from: 1 })
+	}
+	const handleSeleted = () =>{
+		setDropDown(false);
 	}
 	useEffect(() => {
 		if (CODE) {
@@ -252,7 +259,7 @@ const ModalAdd: React.FC<PropsAdd> = (props: PropsAdd) => {
 				{showDropDown &&
 					<DropDown
 						data={select}
-						onPress={() => { }}
+						onPress={handleSeleted}
 					/>
 				}
 			</View>
@@ -275,7 +282,7 @@ const styles = StyleSheet.create({
 		marginHorizontal: 15,
 		width: WIDTH / 1.1,
 		borderRadius: 15,
-		top: 80,
+		top: 50,
 		backgroundColor: 'white',
 		alignItems: 'center',
 		alignSelf:'center'

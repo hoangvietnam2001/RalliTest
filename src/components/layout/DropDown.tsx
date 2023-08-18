@@ -16,7 +16,7 @@ export default function DropDown(props: Props) {
 
     const handleSelected = (value: any) => {
         dispatch(setSelectItem(value));
-        props.onPress
+        props.onPress?.()
     };
     return (
         <ScrollView style={styles.containder} showsVerticalScrollIndicator = {false}>

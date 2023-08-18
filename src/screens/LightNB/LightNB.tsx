@@ -40,7 +40,7 @@ interface Props {
 export default function LightNB({ navigation }: { navigation: any }) {
 	const [data, setData] = useState([]);
 	const [loading, setLoading] = useState(true);
-	const [showAdd, setShow] = useState(false);
+	const [showModal, setShow] = useState(false);
 	const [dataAdd, setDataAdd]: any = useState([]);
 	// const [isFetching, setIsFetching] = useState(false); //load du lieu
 	const CODE = useSelector((state: any)=>state.CODE)
@@ -60,7 +60,7 @@ export default function LightNB({ navigation }: { navigation: any }) {
 
 	useEffect(() => {
 		fetchData();
-	}, [isFetching['isFetching']]);
+	}, [isFetching]);
 
 	// fetch data
 	const fetchData = async () => {
@@ -74,7 +74,7 @@ export default function LightNB({ navigation }: { navigation: any }) {
 		}
 	};
 
-	const handleShowAdd = () => {
+	const handleshowModal = () => {
 		setShow(true);
 	};
 	const handleSave = () => {
@@ -90,7 +90,7 @@ export default function LightNB({ navigation }: { navigation: any }) {
 				}
 			};
 		}
-		if (kt <= 9) {
+		if (kt <= 11) {
 			ToastAndroid.show('Chưa nhập đủ thông tin', ToastAndroid.SHORT);
 		}
 		else {
@@ -106,6 +106,8 @@ export default function LightNB({ navigation }: { navigation: any }) {
 				dispatch(setSTATUS({from: '', value:''}))
 			}
 		}
+		console.log(dataAdd)
+
 	};
 	const FetchData = (value: any) => {
 		setDataAdd(value);
@@ -131,11 +133,11 @@ export default function LightNB({ navigation }: { navigation: any }) {
 				<SafeAreaView
 					style={[
 						styles.container,
-						{ backgroundColor: showAdd ? '#CCCCCC' : '#FFF' },
+						{ backgroundColor: showModal ? '#CCCCCC' : '#FFF' },
 					]}>
 					{/* <LoadingNB /> */}
 					<View style={styles.header}>
-						<TouchableOpacity onPress={handleShowAdd}>
+						<TouchableOpacity onPress={handleshowModal}>
 							<Icon
 								name="add-box"
 								size={24}
@@ -174,7 +176,7 @@ export default function LightNB({ navigation }: { navigation: any }) {
 						/>
 					</View>
 					<Modal 
-						visible = {showAdd} 
+						visible = {showModal} 
 						transparent
 					>
 						<ModalAdd
