@@ -41,6 +41,8 @@ export default function ItemNB({item, onPress}: {item: any; onPress: any}) {
 				<Switch
 					style={styles.switch}
 					value={toggle}
+					disabled
+					
 					onChange={() => setToggle(!toggle)}
 					trackColor={{false: 'gray', true: '#005A6F'}}
 				/>
